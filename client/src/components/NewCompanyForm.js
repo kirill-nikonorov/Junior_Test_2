@@ -2,16 +2,15 @@ import React from "react";
 import {bindActionCreators, compose} from "redux"
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
-
-
+import namespace from "../containers/namespace"
 import * as ActionsCreators from "../actions/actions"
-
+import {Field, reduxForm} from "redux-form"
+import axios from "axios";
 import {Form, Icon, Input, Button, Select} from 'antd';
-
-const FormItem = Form.Item;
 import 'antd/dist/antd.css';
 
 const Option = Select.Option;
+const FormItem = Form.Item;
 
 
 class UserForm extends React.Component {
@@ -24,12 +23,24 @@ class UserForm extends React.Component {
             actions,
             industries,
             subIndustries,
-            industryId: -1
+            industryId: -1,
+            subIndustryId: -1
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
 
+        this.renderSelect = this.renderSelect.bind(this);
+        this.renderField = this.renderField.bind(this);
+
+        this.handleIndustrySelect = this.handleIndustrySelect.bind(this);
+        this.handleSubIndustrySelect = this.handleSubIndustrySelect.bind(this);
+
+        this.postNewCompany = this.postNewCompany.bind(this);
+
+        /* setInterval(() => {
+             console.log(this.state)
+         }, 5000)*/
     }
 
     handleSubmit(e) {
@@ -37,31 +48,153 @@ class UserForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.postNewCompany();
             }
         });
     };
 
+    postNewCompany() {
+        const {getFieldValue} = this.props.form;
+        const {industryId, subIndustryId} = this.state;
+        const name = getFieldValue("Company");
+
+        let data = {
+            "name": name,
+            "industry": industryId,
+            "sub_industry": subIndustryId
+        };
+
+        axios.post("http://doc.konnex.us/public/companies/", data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+           }
+        })
+            .then((responce) => {
+                console.log(responce)
+            })
+            .then(()=>{
+
+            })
+            .catch((error) => {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                } else if (error.request) {
+                    console.log(error.request);
+                } else {
+                    console.log('Error', error.message);
+                }
+            });
+    }
+
+    renderField({
+                    input,
+                    input: {name},
+                    meta,
+                    formItemLayout
+                }) {
+        delete input.value;
+
+        const {getFieldDecorator} = this.props.form;
+        return (
+            <FormItem
+                {...meta}
+                {...formItemLayout}>
+                {getFieldDecorator(`${name}`, {
+                    rules: [{required: true, message: `Please input you ${name}!`}]
+                })(
+                    <Input
+                        {...input}
+                        placeholder={name}
+                        autoComplete="off"
+                    />
+                )
+                }
+            </FormItem>
+        )
+    }
+
+    checkName(rule, value, cb) {
+
+        /*   if (value === "11") cb();
+           else cb("ошибка");
+   */
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                console.log("interval has Come")
+                if (value === "11") resolve(cb());
+                else resolve(cb("no"))
+            }, 0)
+        })
+    }
+
+    renderSelect({
+                     input,
+                     input: {name},
+                     placeholder,
+                     onSelect,
+                     arrayOfOptions,
+                     meta,
+                     formItemLayout
+                 }) {
+        delete input.value;
+
+        const {getFieldDecorator} = this.props.form;
+
+        return (
+            <FormItem
+                {...formItemLayout}
+                {...meta}>
+                {getFieldDecorator(`${name}`, {
+                    rules: [{required: true, message: `Please input you ${name}!`}],
+                })(
+                    <Select
+                        {...input}
+                        mode="combobox"
+                        placeholder={name}
+                        defaultActiveFirstOption={false}
+                        onSelect={onSelect}
+                        arrayOfOptions={arrayOfOptions}
+                    >
+                        {arrayOfOptions}
+                    </Select>
+                )}
+            </FormItem>
+        )
+    }
+
     handleSelect(value, option) {
-        console.log("option = ", option.key);
-
         const {key} = option;
-        const {actions, subIndustries, industryId} = this.state;
+        const {industries} = this.state;
 
+        if (industries.map(industry => (industry.id)).indexOf(parseInt(key)) !== -1)
+            this.handleIndustrySelect(key);
+        else this.handleSubIndustrySelect(key)
+    }
+
+    handleIndustrySelect(key) {
+        const {actions, industryId, subIndustries} = this.state;
         if (industryId !== key) {
-
             (!subIndustries[key]
                 && actions.fetchSubIndustries(key)
             );
             this.setState({industryId: key})
-
         }
-    };
+    }
 
+    handleSubIndustrySelect(key) {
+        const {subIndustryId} = this.state;
+        if (subIndustryId !== key) {
+            this.setState({subIndustryId: key})
+        }
+    }
 
     render() {
+
         const {industries, subIndustries, industryId} = this.state;
 
-        const {getFieldDecorator, getFieldsError} = this.props.form;
+        const {getFieldsError} = this.props.form;
 
         const industriesOptions = industries.map(industry => <Option key={industry.id}
                                                                      value={industry.name}>{industry.name}</Option>);
@@ -69,57 +202,42 @@ class UserForm extends React.Component {
             subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}
                                                                  value={subIndustry.name}>{subIndustry.name}</Option>) : [];
         const formItemLayout = {
-            style: {width: 300}
+            style: {width: 150}
         };
+
         return (
-            <Form layout="vertical" onSubmit={this.handleSubmit}>
-                <FormItem
-                    {...formItemLayout}>
-                    {getFieldDecorator('company', {
-                        rules: [{required: true, message: 'Please input your username!'}],
-                    })(
-                        <Input placeholder="Company"/>
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}>
-                    {getFieldDecorator('industry', {
-                        rules: [{required: true, message: 'Please input you industry!'}],
-                    })(
-                        <Select
-                            mode="combobox"
-                            placeholder={"Industry"}
-                            defaultActiveFirstOption={false}
-                            onSelect={this.handleSelect}
+            <div>
+                <Form layout="vertical" onSubmit={this.handleSubmit}>
+                    <Field name="Company"
+                           component={this.renderField}
+                           onSelect={this.handleSelect}
+                           formItemLayout={formItemLayout}
+                    />
+                    <Field name="Industry"
+                           component={this.renderSelect}
+                           onSelect={this.handleSelect}
+                           arrayOfOptions={industriesOptions}
+                           formItemLayout={formItemLayout}
+
+                    />
+                    <Field name="Subindustry"
+                           component={this.renderSelect}
+                           onSelect={this.handleSelect}
+                           arrayOfOptions={subIndustriesOptions}
+                           formItemLayout={formItemLayout}
+
+                    />
+                    <FormItem>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            disabled={hasErrors(getFieldsError())}
                         >
-                            {industriesOptions}
-                        </Select>
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}>
-                    {getFieldDecorator('subIndustry', {
-                        rules: [{required: true, message: 'Please input you subindustry!'}],
-                    })(
-                        <Select
-                            mode="combobox"
-                            placeholder={"Subindustry"}
-                            defaultActiveFirstOption={false}
-                        >
-                            {subIndustriesOptions}
-                        </Select>
-                    )}
-                </FormItem>
-                <FormItem>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        disabled={hasErrors(getFieldsError())}
-                    >
-                        Log in
-                    </Button>
-                </FormItem>
-            </Form>
+                            Create
+                        </Button>
+                    </FormItem>
+                </Form>
+            </div>
         );
     }
 
@@ -140,8 +258,9 @@ function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-const mapStateToProps = (state) => {
-    const {industries, subIndustries} = state.companyTypes;
+const mapStateToProps = ({companyTypes: {industries, subIndustries}}) => {
+    //state.form.CompanyForm && console.log(state.form.CompanyForm.values);
+
     return (
         {
             industries,
@@ -159,8 +278,10 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     hot(module),
     connect(mapStateToProps, mapDispatchToProps),
-    Form.create()
-)(UserForm)
+    namespace("reduxForm", reduxForm({form: "CompanyForm"})),
+    Form.create(),
+)
+(UserForm)
 
 
 

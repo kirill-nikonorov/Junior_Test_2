@@ -16,10 +16,11 @@ const Root = ({store}) => (
                 <Link to={"/company"}>Компании</Link>
             </div>
 
-                <Route exact path="/a" component={UserForm}/>
-                <Route exact path="/" component={NewCompanyForm}/>
-              {/*  <Route exact path="/" component={BattleField}/>*/}
-
+            <Route exact path="/a" component={UserForm}/>
+            <Route exact path="/" component={NewCompanyForm}/>
+ {/*           <Route exact path="/" component={BattleField}/>*/}
+       {/*     <BattleField/>*/}
+     {/*       <SecondField/>*/}
         </div>
     </Provider>
 
