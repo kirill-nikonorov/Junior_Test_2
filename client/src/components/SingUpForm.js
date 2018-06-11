@@ -14,15 +14,15 @@ import qs from "qs";
 const FormItem = Form.Item;
 
 
-class UserForm extends React.Component {
+class SingUpForm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {confirmDirty: false}
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.renderField = this.renderField.bind(this)
-        this.handleConfirmBlur = this.handleConfirmBlur.bind(this)
-        this.compareToFirstPassword = this.compareToFirstPassword.bind(this)
+        this.state = {confirmDirty: false};
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.renderField = this.renderField.bind(this);
+        this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
+        this.compareToFirstPassword = this.compareToFirstPassword.bind(this);
         this.validateToNextPassword = this.validateToNextPassword.bind(this)
     }
 
@@ -219,5 +219,5 @@ export default compose(
     namespace("reduxForm", reduxForm({form: "UserSinUpForm"})),
     Form.create(),
 )
-(UserForm)
+(SingUpForm)
 

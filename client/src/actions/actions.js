@@ -1,26 +1,7 @@
 import * as types from "../constants/constants"
 import axios from "axios"
-/*
-export const fetchCompanies = () => {
-    axios.get('http://doc.konnex.us/public/companies/',
-        {
-            params: {
-                page: 2,
-                page_size: 50
-            }
-        })
-        .then((responce) => {
-            console.log(responce.data.results)
-        })
-        .catch((error) => {
-            console.log(error)
+import qs from "qs";
 
-        })
-    return {
-        type: types.,
-        companies: []
-    }
-};*/
 export const fetchIndustries = () => (dispath) => {
     axios.get('http://doc.konnex.us/industries/', {
         params: {
@@ -58,6 +39,32 @@ export const fetchSubIndustries = (industryId) => (dispath) => {
         });
 
 };
+export const postNewCompany = ({data}) => (dispath) => {
+    axios.post("http://doc.konnex.us/public/companies/", data, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        }
+    })
+        .then((responce) => {
+            console.log(responce);
+
+        })
+
+        .catch((error) => {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log('Error', error.message);
+            }
+        });
+
+};
+
+
 
 export const authUser = () => ({
     type: types.AUTH_USER
