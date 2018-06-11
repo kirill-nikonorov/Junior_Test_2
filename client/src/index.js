@@ -2,8 +2,10 @@ import {render} from "react-dom";
 import React from "react";
 import ReduxThunk from 'redux-thunk'
 import {createStore, applyMiddleware} from "redux";
-import {BrowserRouter as Router} from 'react-router-dom';
+import {BrowserRouter as Router,} from 'react-router-dom';
 
+const hashHistory = Router.hashHistory;
+console.log(hashHistory)
 
 import rootReducer from "./reducers/rootReducer";
 import Root from "./containers/Root"
@@ -20,11 +22,11 @@ let a = setInterval(() => {
 */
 
 render(
-    <Router>
+    <Router history={hashHistory}>
         <Root store={store}/>
     </Router>
-,
-document.getElementById("root"));
+    ,
+    document.getElementById("root"));
 
 if (module.hot) {
     module.hot.accept();

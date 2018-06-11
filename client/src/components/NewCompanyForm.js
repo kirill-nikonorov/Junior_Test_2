@@ -8,6 +8,9 @@ import {Field, reduxForm} from "redux-form"
 import axios from "axios";
 import {Form, Icon, Input, Button, Select} from 'antd';
 import 'antd/dist/antd.css';
+import qs from 'qs';
+import { Row, Col } from 'antd';
+
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -54,7 +57,9 @@ class UserForm extends React.Component {
     };
 
     postNewCompany() {
-        const {getFieldValue} = this.props.form;
+
+        const {history, form: {getFieldValue}} = this.props;
+
         const {industryId, subIndustryId} = this.state;
         const name = getFieldValue("Company");
 
@@ -68,14 +73,14 @@ class UserForm extends React.Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-           }
+            }
         })
             .then((responce) => {
-                console.log(responce)
+                console.log(responce);
+                history.push("/")
+                console.log(qs);
             })
-            .then(()=>{
 
-            })
             .catch((error) => {
                 if (error.response) {
                     console.log(error.response.data);
@@ -100,9 +105,10 @@ class UserForm extends React.Component {
         return (
             <FormItem
                 {...meta}
-                {...formItemLayout}>
+                {...formItemLayout}
+            >
                 {getFieldDecorator(`${name}`, {
-                    rules: [{required: true, message: `Please input you ${name}!`}]
+                    rules: [{required: true, message: `Please input your ${name}!`}]
                 })(
                     <Input
                         {...input}
@@ -113,20 +119,6 @@ class UserForm extends React.Component {
                 }
             </FormItem>
         )
-    }
-
-    checkName(rule, value, cb) {
-
-        /*   if (value === "11") cb();
-           else cb("ошибка");
-   */
-        new Promise((resolve, reject) => {
-            setTimeout(() => {
-                console.log("interval has Come")
-                if (value === "11") resolve(cb());
-                else resolve(cb("no"))
-            }, 0)
-        })
     }
 
     renderSelect({
@@ -147,7 +139,7 @@ class UserForm extends React.Component {
                 {...formItemLayout}
                 {...meta}>
                 {getFieldDecorator(`${name}`, {
-                    rules: [{required: true, message: `Please input you ${name}!`}],
+                    rules: [{required: true, message: `Please input your ${name}!`}],
                 })(
                     <Select
                         {...input}
@@ -155,7 +147,6 @@ class UserForm extends React.Component {
                         placeholder={name}
                         defaultActiveFirstOption={false}
                         onSelect={onSelect}
-                        arrayOfOptions={arrayOfOptions}
                     >
                         {arrayOfOptions}
                     </Select>
@@ -193,8 +184,7 @@ class UserForm extends React.Component {
     render() {
 
         const {industries, subIndustries, industryId} = this.state;
-
-        const {getFieldsError} = this.props.form;
+        const {history} = this.props;
 
         const industriesOptions = industries.map(industry => <Option key={industry.id}
                                                                      value={industry.name}>{industry.name}</Option>);
@@ -210,7 +200,6 @@ class UserForm extends React.Component {
                 <Form layout="vertical" onSubmit={this.handleSubmit}>
                     <Field name="Company"
                            component={this.renderField}
-                           onSelect={this.handleSelect}
                            formItemLayout={formItemLayout}
                     />
                     <Field name="Industry"
@@ -218,22 +207,34 @@ class UserForm extends React.Component {
                            onSelect={this.handleSelect}
                            arrayOfOptions={industriesOptions}
                            formItemLayout={formItemLayout}
-
                     />
                     <Field name="Subindustry"
                            component={this.renderSelect}
                            onSelect={this.handleSelect}
                            arrayOfOptions={subIndustriesOptions}
                            formItemLayout={formItemLayout}
-
                     />
                     <FormItem>
                         <Button
                             type="primary"
                             htmlType="submit"
-                            disabled={hasErrors(getFieldsError())}
                         >
                             Create
+                        </Button>
+                    </FormItem>
+                    <FormItem>
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                const search = qs.parse(this.props.history.location.search)
+                                console.log(search);
+
+
+                                history.push("/");
+                            }}
+
+                        >
+                            Next form
                         </Button>
                     </FormItem>
                 </Form>

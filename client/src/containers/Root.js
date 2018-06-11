@@ -11,14 +11,14 @@ const Root = ({store}) => (
     <Provider store={store}>
         <div>
             <div>
-                <Link to={"/"}>Главн</Link>
+                <Link to={"/"}>Регистрация</Link>
                 <br/>
-                <Link to={"/company"}>Компании</Link>
+                <Link to={"/createNewCompany"}>Создать Команию</Link>
             </div>
 
-            <Route exact path="/a" component={UserForm}/>
-            <Route exact path="/" component={NewCompanyForm}/>
- {/*           <Route exact path="/" component={BattleField}/>*/}
+           {/* <Route exact path="/" component={UserForm}/>*/}
+{/*            <Route exact path="/createNewCompany" component={NewCompanyForm}/>*/}
+            <Route exact path="/" component={BattleField}/>
        {/*     <BattleField/>*/}
      {/*       <SecondField/>*/}
         </div>

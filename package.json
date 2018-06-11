@@ -9,6 +9,7 @@
     "axios": "^0.18.0",
     "path": "^0.12.7",
     "prop-types": "^15.6.1",
+    "qs": "^6.5.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
