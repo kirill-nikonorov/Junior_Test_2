@@ -4,7 +4,6 @@ import {Field, reduxForm} from "redux-form"
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
 
-
 import * as ActionsCreators from "../actions/actions"
 import "react-bootstrap";
 import {Form, Input, Row, Col, Button} from "antd/lib/index";
@@ -23,7 +22,10 @@ class SingUpForm extends React.Component {
         this.renderField = this.renderField.bind(this);
         this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
         this.compareToFirstPassword = this.compareToFirstPassword.bind(this);
-        this.validateToNextPassword = this.validateToNextPassword.bind(this)
+        this.validateToNextPassword = this.validateToNextPassword.bind(this);
+        this.postNewUser = this.postNewUser.bind(this);
+        this.extractCompanyIdFromLocationParams = this.extractCompanyIdFromLocationParams.bind(this);
+        this.handleSuccessPost = this.handleSuccessPost.bind(this);
     }
 
 
@@ -32,16 +34,59 @@ class SingUpForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.postNewUser(values)
             }
         });
-        console.log("Subscribed")
+        //  console.log("Subscribed")
     }
 
-    handleConfirmBlur = (e) => {
+    postNewUser(values) {
+
+        const {actions} = this.props,
+            {
+                Email: username,
+                Password: password,
+                ['First name']: firstName,
+                ['Last name']: lastName,
+                Mobile: mobile
+            } = values,
+            companyId = this.extractCompanyIdFromLocationParams();
+
+        console.log(companyId);
+
+        const data = {
+            username,
+            password,
+            first_name: firstName,
+            last_name: lastName,
+            mobile
+        };
+        if (companyId) {
+            data.company = companyId;
+            actions.postNewUser(data, this.handleSuccessPost)
+        }
+        else {
+            actions.postNewIndividualUser(data, () => this.handleSuccessPost(username))
+        }
+        console.log(data);
+    }
+
+    extractCompanyIdFromLocationParams() {
+        let {location: {search}} = this.props;
+        return qs.parse(search.substr(1)).companyID;
+    };
+
+    handleSuccessPost(username) {
+        const {history} = this.props;
+        history.push(`/signupcomplete?username=${username}`);
+    };
+
+    handleConfirmBlur(e) {
         const value = e.target.value;
         this.setState({confirmDirty: this.state.confirmDirty || !!value});
     };
-    compareToFirstPassword = (rule, value, callback) => {
+
+    compareToFirstPassword(rule, value, callback) {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('Password')) {
             callback('Two passwords that you enter is inconsistent!');
@@ -49,7 +94,8 @@ class SingUpForm extends React.Component {
             callback();
         }
     };
-    validateToNextPassword = (rule, value, callback) => {
+
+    validateToNextPassword(rule, value, callback) {
         const form = this.props.form;
         if (value && this.state.confirmDirty) {
             form.validateFields(['Confirm Password'], {force: true});
@@ -142,25 +188,10 @@ class SingUpForm extends React.Component {
                     onBlur={this.handleConfirmBlur}
                     validatorFunction={this.compareToFirstPassword}
                 />
-
                 <FormItem>
                     <Button type="primary"
-                            htmlType="submit">Subscribe form</Button>
+                            htmlType="submit">Sign up</Button>
                 </FormItem>
-
-                <Button
-                    type="primary"
-                    onClick={() => {
-
-                        const {history} = this.props;
-                        const search = qs.parse(this.props.history.location.search)
-                        console.log(search);
-
-                        history.push("/?a=a");
-                    }}
-                >
-                    Check
-                </Button>
             </Form>
 
         );
@@ -199,7 +230,7 @@ class Test extends React.Component {
 
 const mapStateToProps = ({form: {UserSinUpForm}}) => {
 
-    UserSinUpForm && UserSinUpForm.values && console.log(UserSinUpForm.values);
+    // UserSinUpForm && UserSinUpForm.values && console.log(UserSinUpForm.values);
 
     return (
         {}

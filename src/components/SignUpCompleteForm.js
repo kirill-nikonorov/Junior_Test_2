@@ -25,8 +25,9 @@ class UserForm extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderField = this.renderField.bind(this);
-        this.authorize = this.authorize.bind(this);
+        this.confirmRegistration = this.confirmRegistration.bind(this);
         this.handleSuccessAuthorization = this.handleSuccessAuthorization.bind(this);
+        this.extractCompanyIdFromLocationParams = this.extractCompanyIdFromLocationParams.bind(this);
 
     }
 
@@ -35,29 +36,30 @@ class UserForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                this.authorize(values);
+                this.confirmRegistration(values);
             }
         });
     };
 
-    authorize({Email: username, Password: password}) {
+    confirmRegistration({Email: username, Password: password}) {
 
         const {actions} = this.props;
-
-        const data = {
+        let data = {
             username,
-            password,
+            new_password: "aqweqweqwe",
+            token: password,
+            first_name: "kir"
         };
 
         console.log(data);
 
-        actions.authUser(data, this.handleSuccessAuthorization)
+        actions.confirmRegistration(data, this.handleSuccessAuthorization)
     }
 
     handleSuccessAuthorization() {
         const {history} = this.props;
-        history.push("/");
-        console.log("SUCCESS AUTHORIZATION")
+        console.log("SUCCESS CONFIRM")
+        history.push("/")
     }
 
     renderField({
@@ -68,7 +70,6 @@ class UserForm extends React.Component {
                     type
                 }) {
         delete input.value;
-
         const {getFieldDecorator} = this.props.form;
         return (
             <FormItem
@@ -89,6 +90,10 @@ class UserForm extends React.Component {
             </FormItem>
         )
     }
+    extractCompanyIdFromLocationParams() {
+        let {location: {search}} = this.props;
+        return qs.parse(search.substr(1)).username;
+    };
 
     render() {
         const formItemLayout = {
@@ -103,6 +108,7 @@ class UserForm extends React.Component {
                            component={this.renderField}
                            formItemLayout={formItemLayout}
                            type="text"
+                           value="dsd"
                     />
                     <Field name="Password"
                            component={this.renderField}
@@ -115,12 +121,17 @@ class UserForm extends React.Component {
                             type="primary"
                             htmlType="submit"
                         >
-                            Log In
+                            Create
                         </Button>
                     </FormItem>
                 </Form>
             </div>
         );
+    }
+    componentDidMount(){
+        console.log("componentDidMount");
+        const {setFieldsValue} = this.props.form;
+        setFieldsValue({Email : "метод Заглушки"})
     }
 }
 

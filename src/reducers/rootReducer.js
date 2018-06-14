@@ -1,7 +1,7 @@
 import {combineReducers} from "redux"
 import {reducer as formReducer} from "redux-form"
 
-import {AUTH_USER} from "../constants/constants";
+import {SAVE_TOKEN, AUTH_USER} from "../constants/constants";
 import companyTypesReducer from "./companyTypesReducer"
 
 export const getTokenFromLocalStorage = () => {
@@ -10,8 +10,8 @@ export const getTokenFromLocalStorage = () => {
 
 const tokenReducer = (state = getTokenFromLocalStorage(), action) => {
     switch (action.type) {
-        case AUTH_USER :
-            return "токен новый";
+        case SAVE_TOKEN :
+            return action.token;
         default:
             return state;
     }
@@ -19,7 +19,7 @@ const tokenReducer = (state = getTokenFromLocalStorage(), action) => {
 
 const rootReducer = combineReducers({
     token: tokenReducer,
-    companyTypes: companyTypesReducer ,
+    companyTypes: companyTypesReducer,
     form: formReducer
 });
 

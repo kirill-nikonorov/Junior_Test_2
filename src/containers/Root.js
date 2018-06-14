@@ -10,10 +10,10 @@ const Root = ({store}) => (
 
     <Provider store={store}>
         <Row  align="middle" type="flex" justify="center">
-            <Col span={12}>
+            <Col span={4}>
               Картинка
             </Col>
-            <Col span={12}>
+            <Col span={20}>
                 <App/>
             </Col>
         </Row>

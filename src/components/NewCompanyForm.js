@@ -9,7 +9,7 @@ import axios from "axios";
 import {Form, Icon, Input, Button, Select} from 'antd';
 import 'antd/dist/antd.css';
 import qs from 'qs';
-import { Row, Col } from 'antd';
+import {Row, Col} from 'antd';
 
 
 const Option = Select.Option;
@@ -40,6 +40,7 @@ class UserForm extends React.Component {
         this.handleSubIndustrySelect = this.handleSubIndustrySelect.bind(this);
 
         this.postNewCompany = this.postNewCompany.bind(this);
+        this.handleSuccessPost = this.handleSuccessPost.bind(this);
 
         /* setInterval(() => {
              console.log(this.state)
@@ -48,50 +49,37 @@ class UserForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
+        const {actions} = this.props;
+
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                this.postNewCompany();
+
+                this.postNewCompany(values);
             }
         });
     };
 
-    postNewCompany() {
+    postNewCompany(values) {
 
-        const {history, form: {getFieldValue}} = this.props;
+        const {actions} = this.props;
 
         const {industryId, subIndustryId} = this.state;
-        const name = getFieldValue("Company");
 
         let data = {
-            "name": name,
-            "industry": industryId,
-            "sub_industry": subIndustryId
+            name: values.Company,
+            industry: industryId,
+            sub_industry: subIndustryId
         };
 
-        axios.post("http://doc.konnex.us/public/companies/", data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            }
-        })
-            .then((responce) => {
-                console.log(responce);
-                history.push("/");
-                console.log(qs);
-            })
-
-            .catch((error) => {
-                if (error.response) {
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                } else if (error.request) {
-                    console.log(error.request);
-                } else {
-                    console.log('Error', error.message);
-                }
-            });
+        actions.postNewCompany(data, this.handleSuccessPost);
     }
+
+    handleSuccessPost(id) {
+        const {history} = this.props;
+
+        history.push("/signup?CompanyID=" + id);
+    };
 
     renderField({
                     input,
@@ -220,21 +208,6 @@ class UserForm extends React.Component {
                             htmlType="submit"
                         >
                             Create
-                        </Button>
-                    </FormItem>
-                    <FormItem>
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                const search = qs.parse(this.props.history.location.search)
-                                console.log(search);
-
-
-                                history.push("/");
-                            }}
-
-                        >
-                            Next form
                         </Button>
                     </FormItem>
                 </Form>

@@ -1,5 +1,5 @@
 .idea
 node_modules
 package-lock.json
-client/src/components/BattleField.js
-client/src/components/SecondField.js
+src/components/BattleField.js
+src/components/SecondField.js
