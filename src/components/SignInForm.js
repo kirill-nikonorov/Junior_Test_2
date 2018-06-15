@@ -83,44 +83,23 @@ class UserForm extends React.Component {
     }
 
     render() {
-        const formItemLayout = {
-            wrapperCol: {span: 6, offset: 1}
-        };
-        const {getFieldDecorator} = this.props.form;
-
         return (
             <Form layout="horizontal" onSubmit={this.handleSubmit}>
-
                 <Field name="Email"
                        component={this.renderField}
-                       formItemLayout={formItemLayout}
                        type="text"
                 />
                 <Field name="Password"
                        component={this.renderField}
-                       formItemLayout={formItemLayout}
                        type="password"
                 />
 
                 <FormItem
-                    {...formItemLayout}
                 >
-                    {getFieldDecorator(`a`, {
-                        rules: [{required: true, message: `Require`}]
-                    })(
-                        <Input
-                            name="a"
-                            placeholder='a'
-                            type="text"
-                        />
-                    )}
-                </FormItem>
-
-                <FormItem
-                    {...formItemLayout}>
                     <Button
                         type="primary"
                         htmlType="submit"
+                        style={{width: "100%"}}
                     >
                         Log In
                     </Button>

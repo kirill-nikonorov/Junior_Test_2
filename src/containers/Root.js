@@ -15,11 +15,18 @@ const Root = ({store}) => (
 
     <Provider store={store}>
         <Layout>
-            <Content>
-                Картинка
+            <Content style={{background: '#fff'}}>
+                <img src="/i.png"
+                     style={{
+                         width: '100%',
+                         height: '759px'
+                     }}/>
             </Content>
-            <Sider width={400} theme="light">
-                    <Forms/>
+            <Sider width={450}
+                   style={{
+                       background: '#fff'
+                   }}>
+                <Forms/>
             </Sider>
         </Layout>
     </Provider>

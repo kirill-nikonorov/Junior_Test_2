@@ -141,12 +141,12 @@ class SingUpForm extends React.Component {
 
 
         const formItemLayout = {
-            style: {width: 200}
+            wrapperCol: {span: 24},
         };
 
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Row gutter={8}>
+            <Form layout='horizontal' onSubmit={this.handleSubmit}>
+                <Row gutter={6}>
                     <Col span={12}>
                         <Field
                             name="First name"
@@ -191,7 +191,10 @@ class SingUpForm extends React.Component {
                 <FormItem
                     {...formItemLayout}>
                     <Button type="primary"
-                            htmlType="submit">Sign up</Button>
+                            htmlType="submit"
+                            style={{width: "100%"}}
+                    >Sign up</Button>
+
                 </FormItem>
             </Form>
 

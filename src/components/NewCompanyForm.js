@@ -180,7 +180,7 @@ class UserForm extends React.Component {
             subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}
                                                                  value={subIndustry.name}>{subIndustry.name}</Option>) : [];
         const formItemLayout = {
-            wrapperCol: { span: 0 },
+
         };
 
         return (
@@ -207,6 +207,7 @@ class UserForm extends React.Component {
                         <Button
                             type="primary"
                             htmlType="submit"
+                            style={{width: "100%"}}
                         >
                             Create
                         </Button>
