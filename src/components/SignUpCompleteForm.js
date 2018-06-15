@@ -97,7 +97,7 @@ class UserForm extends React.Component {
 
     render() {
         const formItemLayout = {
-            style: {width: 150}
+            wrapperCol: { span: 24 },
         };
 
         return (
@@ -116,7 +116,8 @@ class UserForm extends React.Component {
                            type="password"
                     />
 
-                    <FormItem>
+                    <FormItem
+                        {...formItemLayout}>
                         <Button
                             type="primary"
                             htmlType="submit"

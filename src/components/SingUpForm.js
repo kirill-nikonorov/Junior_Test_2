@@ -188,7 +188,8 @@ class SingUpForm extends React.Component {
                     onBlur={this.handleConfirmBlur}
                     validatorFunction={this.compareToFirstPassword}
                 />
-                <FormItem>
+                <FormItem
+                    {...formItemLayout}>
                     <Button type="primary"
                             htmlType="submit">Sign up</Button>
                 </FormItem>

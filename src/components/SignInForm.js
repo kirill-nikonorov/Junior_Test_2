@@ -16,13 +16,6 @@ const FormItem = Form.Item;
 class UserForm extends React.Component {
     constructor(props) {
         super(props);
-
-        const {actions} = this.props;
-
-        this.state = {
-            actions
-        };
-
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderField = this.renderField.bind(this);
         this.authorize = this.authorize.bind(this);
@@ -81,7 +74,6 @@ class UserForm extends React.Component {
                     <Input
                         {...input}
                         placeholder={name}
-                        autoComplete="off"
                         type={type}
                     />
                 )
@@ -92,34 +84,48 @@ class UserForm extends React.Component {
 
     render() {
         const formItemLayout = {
-            style: {width: 150}
+            wrapperCol: {span: 6, offset: 1}
         };
+        const {getFieldDecorator} = this.props.form;
 
         return (
-            <div>
-                <Form layout="vertical" onSubmit={this.handleSubmit}>
+            <Form layout="horizontal" onSubmit={this.handleSubmit}>
 
-                    <Field name="Email"
-                           component={this.renderField}
-                           formItemLayout={formItemLayout}
-                           type="text"
-                    />
-                    <Field name="Password"
-                           component={this.renderField}
-                           formItemLayout={formItemLayout}
-                           type="password"
-                    />
+                <Field name="Email"
+                       component={this.renderField}
+                       formItemLayout={formItemLayout}
+                       type="text"
+                />
+                <Field name="Password"
+                       component={this.renderField}
+                       formItemLayout={formItemLayout}
+                       type="password"
+                />
 
-                    <FormItem>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                        >
-                            Log In
-                        </Button>
-                    </FormItem>
-                </Form>
-            </div>
+                <FormItem
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator(`a`, {
+                        rules: [{required: true, message: `Require`}]
+                    })(
+                        <Input
+                            name="a"
+                            placeholder='a'
+                            type="text"
+                        />
+                    )}
+                </FormItem>
+
+                <FormItem
+                    {...formItemLayout}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                    >
+                        Log In
+                    </Button>
+                </FormItem>
+            </Form>
         );
     }
 }

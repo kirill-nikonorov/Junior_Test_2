@@ -180,12 +180,12 @@ class UserForm extends React.Component {
             subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}
                                                                  value={subIndustry.name}>{subIndustry.name}</Option>) : [];
         const formItemLayout = {
-            style: {width: 150}
+            wrapperCol: { span: 0 },
         };
 
         return (
             <div>
-                <Form layout="vertical" onSubmit={this.handleSubmit}>
+                <Form layout="horizontal" onSubmit={this.handleSubmit}>
                     <Field name="Company"
                            component={this.renderField}
                            formItemLayout={formItemLayout}
@@ -202,7 +202,8 @@ class UserForm extends React.Component {
                            arrayOfOptions={subIndustriesOptions}
                            formItemLayout={formItemLayout}
                     />
-                    <FormItem>
+                    <FormItem
+                        {...formItemLayout}>
                         <Button
                             type="primary"
                             htmlType="submit"
