@@ -16,35 +16,30 @@ const {Header, Content, Footer, Sider} = Layout;
 
 
 const App = ({store}) => (
-
-    <div>
-        {/* <div style={{border: "10px solid black"}}>*/}
-
-        <div>
-            <Link to={"/"}>Авторизация</Link>
-            <br/>
-            <Link to={"/signup?"}>Регистрация</Link>
-            <br/>
-            <Link to={"/signupcomplete?username=11"}>Подтверждение регистрации</Link>
-            <br/>
-            <Link to={"/createnewcompany"}>Создать Команию</Link>
-        </div>
-
-
         <Row type="flex" justify="center">
-            <Col style={{border: "1px solid black"}} span={20}>
-                <Header style={{background: '#aaa'}}>
-                    Ссылка
+            <Col span={20}>
+                <Header style={{background: 'white'}}>
+                    <Link to={"/"}>
+                        Konnex
+                    </Link>
                 </Header>
                 <Content>
-                        <Route exact path="/" component={SignInForm}/>
-                        <Route exact path="/createnewcompany" component={NewCompanyForm}/>
-                        <Route exact path="/signup" component={SingUpForm}/>
-                        <Route exact path="/signupcomplete" component={SignUpCompleteForm}/>
+                    <Route exact path="/" component={SignInForm}/>
+                    <Route exact path="/createnewcompany" component={NewCompanyForm}/>
+                    <Route exact path="/signup" component={SingUpForm}/>
+                    <Route exact path="/signupcomplete" component={SignUpCompleteForm}/>
                 </Content>
+                <div>
+                    <Link to={"/"}>Авторизация</Link>
+                    <br/>
+                    <Link to={"/signup?"}>Регистрация</Link>
+                    <br/>
+                    <Link to={"/signupcomplete?username=11"}>Подтверждение регистрации</Link>
+                    <br/>
+                    <Link to={"/createnewcompany"}>Создать Команию</Link>
+                </div>
             </Col>
         </Row>
-    </div>
 );
 
 

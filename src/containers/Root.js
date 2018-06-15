@@ -14,12 +14,19 @@ import {hot} from "react-hot-loader";
 const Root = ({store}) => (
 
     <Provider store={store}>
-        <Layout>
-            <Content>
-                Картинка
+        <Layout style={{
+            height: '100%',
+            border : 'none'
+        }}>
+            <Content style={{background: '#fff'}}>
+                <img src="/i.png"
+                     />
             </Content>
-            <Sider width={400} theme="light">
-                    <Forms/>
+            <Sider width={450}
+                   style={{
+                       background: '#fff'
+                   }}>
+                <Forms/>
             </Sider>
         </Layout>
     </Provider>
