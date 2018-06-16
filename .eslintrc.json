@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "spellcheck"
+  ],
+  "globals": {
+    "localStorage": true ,
+    "console" : true ,
+    "alert" : true ,
+    "window" : true,
+    "document" : true,
+    "__dirname" : true
+  },
+  "env": {
+    "commonjs": true ,
+    "node": true
+  },
+  "rules": {
+    "no-console": "off",
+    "no-case-declarations" : "off"
+  }
+}

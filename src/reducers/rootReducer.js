@@ -1,7 +1,7 @@
 import {combineReducers} from "redux"
 import {reducer as formReducer} from "redux-form"
 
-import {SAVE_TOKEN, AUTH_USER} from "../constants/constants";
+import {SAVE_TOKEN} from "../constants/constants";
 import companyTypesReducer from "./companyTypesReducer"
 
 export const getTokenFromLocalStorage = () => {

@@ -7,7 +7,7 @@ import {hot} from "react-hot-loader";
 import * as ActionsCreators from "../actions/actions"
 import "react-bootstrap";
 import {Form, Input, Row, Col, Button} from "antd/lib/index";
-import namespace from "../containers/namespace";
+import namespace from "../../lib/namespace";
 import qs from "qs";
 
 const FormItem = Form.Item;
@@ -74,17 +74,17 @@ class SingUpForm extends React.Component {
     extractCompanyIdFromLocationParams() {
         let {location: {search}} = this.props;
         return qs.parse(search.substr(1)).companyID;
-    };
+    }
 
     handleSuccessPost(username) {
         const {history} = this.props;
         history.push(`/signupcomplete?username=${username}`);
-    };
+    }
 
     handleConfirmBlur(e) {
         const value = e.target.value;
         this.setState({confirmDirty: this.state.confirmDirty || !!value});
-    };
+    }
 
     compareToFirstPassword(rule, value, callback) {
         const form = this.props.form;
@@ -93,7 +93,7 @@ class SingUpForm extends React.Component {
         } else {
             callback();
         }
-    };
+    }
 
     validateToNextPassword(rule, value, callback) {
         const form = this.props.form;
@@ -135,11 +135,6 @@ class SingUpForm extends React.Component {
 
 
     render() {
-        const {actions} = this.props;
-        /* console.log(this.props);*/
-        const {getFieldDecorator} = this.props.form;
-
-
         const formItemLayout = {
             wrapperCol: {span: 24},
         };
@@ -203,44 +198,6 @@ class SingUpForm extends React.Component {
 
 }
 
-/*
-class Test extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log(props)
-        this.state = {value: ""}
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(...ChangeProps) {
-        console.log(ChangeProps);
-
-        const {onChange} = this.props;
-
-       onChange()
-
-    }
-
-    render() {
-        const value = this.state.value
-        return (
-            <input {...this.props}
-                   name="test"
-                   type="text"
-            />)
-    }
-}*/
-
-const mapStateToProps = ({form: {UserSinUpForm}}) => {
-
-    // UserSinUpForm && UserSinUpForm.values && console.log(UserSinUpForm.values);
-
-    return (
-        {}
-    )
-};
-
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -250,9 +207,8 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     hot(module),
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(null, mapDispatchToProps),
     namespace("reduxForm", reduxForm({form: "UserSinUpForm"})),
-    Form.create(),
-)
-(SingUpForm)
+    Form.create()
+)(SingUpForm)
 

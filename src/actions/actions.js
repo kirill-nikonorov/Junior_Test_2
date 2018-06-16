@@ -1,6 +1,5 @@
 import * as types from "../constants/constants"
 import axios from "axios"
-import qs from "qs";
 import {notification} from "antd/lib/index";
 
 export const fetchIndustries = () => (dispath) => {
@@ -40,7 +39,7 @@ export const fetchSubIndustries = (industryId) => (dispath) => {
         });
 
 };
-export const postNewCompany = (data, onSuccess) => (dispath) => {
+export const postNewCompany = (data, onSuccess) => () => {
     axios.post("http://doc.konnex.us/public/companies/", data, {
         headers: {
             'Content-Type': 'application/json',
@@ -69,7 +68,7 @@ export const postNewCompany = (data, onSuccess) => (dispath) => {
         });
 
 };
-export const postNewUser = (data, onSuccess) => (dispath) => {
+export const postNewUser = (data, onSuccess) => () => {
     axios.post("http://doc.konnex.us/user/register/", data, {
         headers: {
             'Content-Type': 'application/json',
@@ -96,7 +95,7 @@ export const postNewUser = (data, onSuccess) => (dispath) => {
             }
         });
 };
-export const postNewIndividualUser = (data, onSuccess) => (dispath) => {
+export const postNewIndividualUser = (data, onSuccess) => () => {
     axios.post("http://doc.konnex.us/user/register-individual/", data, {
         headers: {
             'Content-Type': 'application/json',

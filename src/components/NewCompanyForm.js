@@ -2,16 +2,11 @@ import React from "react";
 import {bindActionCreators, compose} from "redux"
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
-import namespace from "../containers/namespace"
+import namespace from "../../lib/namespace"
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
-import axios from "axios";
-import {Form, Icon, Input, Button, Select} from 'antd';
+import {Form, Input, Button, Select} from 'antd';
 import 'antd/dist/antd.css';
-import qs from 'qs';
-import {Row, Col} from 'antd';
-
-
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -49,8 +44,6 @@ class UserForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const {actions} = this.props;
-
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
@@ -58,7 +51,7 @@ class UserForm extends React.Component {
                 this.postNewCompany(values);
             }
         });
-    };
+    }
 
     postNewCompany(values) {
 
@@ -79,7 +72,7 @@ class UserForm extends React.Component {
         const {history} = this.props;
 
         history.push("/signup?CompanyID=" + id);
-    };
+    }
 
     renderField({
                     input,
@@ -172,8 +165,6 @@ class UserForm extends React.Component {
     render() {
 
         const {industries, subIndustries, industryId} = this.state;
-        const {history} = this.props;
-
         const industriesOptions = industries.map(industry => <Option key={industry.id}
                                                                      value={industry.name}>{industry.name}</Option>);
         const subIndustriesOptions = subIndustries[industryId] ?
@@ -230,10 +221,6 @@ class UserForm extends React.Component {
     }
 }
 
-function hasErrors(fieldsError) {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
-
 const mapStateToProps = ({companyTypes: {industries, subIndustries}}) => {
     //state.form.CompanyForm && console.log(state.form.CompanyForm.values);
 
@@ -255,9 +242,8 @@ export default compose(
     hot(module),
     connect(mapStateToProps, mapDispatchToProps),
     namespace("reduxForm", reduxForm({form: "CompanyForm"})),
-    Form.create(),
-)
-(UserForm)
+    Form.create()
+)(UserForm)
 
 
 

@@ -2,13 +2,11 @@ import React from "react";
 import {bindActionCreators, compose} from "redux"
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
-import namespace from "../containers/namespace"
+import namespace from "../../lib/namespace"
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
-import axios from "axios";
-import {Form, Icon, Input, Button, Select} from 'antd';
-import 'antd/dist/antd.css';
-import qs from 'qs';
+import {Form,  Input, Button} from 'antd';
+//import 'antd/dist/antd.css';
 
 const FormItem = Form.Item;
 
@@ -31,7 +29,7 @@ class UserForm extends React.Component {
                 this.authorize(values);
             }
         });
-    };
+    }
 
     authorize({Email: username, Password: password}) {
 
@@ -119,9 +117,8 @@ export default compose(
     hot(module),
     connect(null, mapDispatchToProps),
     namespace("reduxForm", reduxForm({form: "CompanyForm"})),
-    Form.create(),
-)
-(UserForm)
+    Form.create()
+)(UserForm)
 
 
 
