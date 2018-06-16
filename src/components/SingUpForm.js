@@ -3,6 +3,7 @@ import {bindActionCreators, compose} from "redux"
 import {Field, reduxForm} from "redux-form"
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
+import {withRouter} from 'react-router-dom';
 
 import * as ActionsCreators from "../actions/actions"
 import "react-bootstrap";

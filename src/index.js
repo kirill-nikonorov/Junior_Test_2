@@ -4,9 +4,6 @@ import ReduxThunk from 'redux-thunk'
 import {createStore, applyMiddleware} from "redux";
 import {BrowserRouter as Router,} from 'react-router-dom';
 
-const hashHistory = Router.hashHistory;
-console.log(hashHistory)
-
 import rootReducer from "./reducers/rootReducer";
 import Root from "./containers/Root"
 
@@ -22,7 +19,7 @@ let a = setInterval(() => {
 */
 
 render(
-    <Router history={hashHistory}>
+    <Router>
         <Root store={store}/>
     </Router>
     ,

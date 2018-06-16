@@ -1,4 +1,5 @@
 import React from "react";
+import {withRouter} from 'react-router-dom';
 import {bindActionCreators, compose} from "redux"
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
@@ -240,6 +241,7 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     hot(module),
+    withRouter,
     connect(mapStateToProps, mapDispatchToProps),
     namespace("reduxForm", reduxForm({form: "CompanyForm"})),
     Form.create()

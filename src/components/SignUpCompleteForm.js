@@ -1,5 +1,6 @@
 import React from "react";
 import {bindActionCreators, compose} from "redux"
+import {withRouter} from 'react-router-dom'
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
 import namespace from "../../lib/namespace"
