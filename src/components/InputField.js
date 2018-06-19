@@ -8,8 +8,6 @@ const FormItem = Form.Item;
 
 const InputField = ({
                         input,
-                        value1,
-                        input: {name, value},
                         placeholder,
                         meta: {touched, error},
                         type
@@ -25,6 +23,13 @@ const InputField = ({
                 type={type}/>
         </FormItem>
     )
+};
+
+InputField.propTypes = {
+    input: PropTypes.object,
+    placeholder: PropTypes.string,
+    meta: PropTypes.object,
+    type: PropTypes.string
 };
 
 export default hot(module)(InputField)

@@ -58,23 +58,21 @@ class SingUpForm extends React.Component {
 
         const {actions} = this.props,
             companyId = this.extractCompanyIdFromLocationParams();
-
         console.log(companyId);
-        console.log(this.props);
-
         const data = {
             username,
             password,
             first_name: firstName,
             last_name: lastName,
             mobile
-        };
+        }, onSuccessPost = () => this.handleSuccessPost(username, password, firstName);
+
         if (companyId) {
             data.company = companyId;
-            actions.postNewUser(data, this.handleSuccessPost)
+            actions.postNewUser(data, onSuccessPost)
         }
         else {
-            actions.postNewIndividualUser(data, () => this.handleSuccessPost(username))
+            actions.postNewIndividualUser(data, onSuccessPost)
         }
         console.log(data);
     }
@@ -84,8 +82,9 @@ class SingUpForm extends React.Component {
         return qs.parse(search.substr(1)).companyID;
     }
 
-    handleSuccessPost(username) {
-        const {history} = this.props;
+    handleSuccessPost(username, password, firstName) {
+        const {history, actions} = this.props;
+        actions.saveAccountCredentials({[username]: {firstName, password}});
         history.push(`/signupcomplete?username=${username}`);
     }
 
@@ -141,12 +140,22 @@ class SingUpForm extends React.Component {
                 <SubscribeButton
                     text="Sign up"
                 />
-
             </Form>
         );
     }
-}
 
+    componentWillMount() {
+        const {initialize} = this.props;
+        initialize({
+                firstName: "qwe",
+                lastName: "qwe",
+                email: "eee@ee.ee",
+                password: "password",
+                confirmPassword: "password"
+            }
+        )
+    }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -157,6 +166,7 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     hot(module),
     connect(null, mapDispatchToProps),
+    withRouter,
     reduxForm({
         form: "UserSinUpForm",
         validate: validateForm

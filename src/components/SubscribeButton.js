@@ -2,7 +2,7 @@ import React from "react";
 import {hot} from "react-hot-loader";
 import PropTypes from "prop-types";
 
-import {Form , Button} from 'antd';
+import {Form, Button} from 'antd';
 
 const FormItem = Form.Item;
 
@@ -19,6 +19,11 @@ const SubscribeButton = ({text}) => {
         </FormItem>
     )
 };
+
+SubscribeButton.propTypes = {
+    text: PropTypes.string
+};
+
 
 export default hot(module)(SubscribeButton)
 

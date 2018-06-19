@@ -11,7 +11,7 @@ let store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 /*let a = setInterval(() => {
     console.log(store.getState())
-}, 3000);*/
+}, 10000);*/
 /*
 let a = setInterval(() => {
     console.log(store.getState().companyTypes.subIndustries)

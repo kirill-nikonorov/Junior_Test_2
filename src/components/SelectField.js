@@ -6,13 +6,12 @@ import PropTypes from "prop-types";
 const FormItem = Form.Item;
 
 const SelectField = ({
-                        input,
-                        input: {name},
-                        placeholder,
-                        onSelect,
-                        arrayOfOptions,
-                        meta: {error, touched},
-                    }) => {
+                         input,
+                         placeholder,
+                         onSelect,
+                         arrayOfOptions,
+                         meta: {error, touched},
+                     }) => {
     const displayingErrorMessage = touched && error ? error : "";
     return (
         <FormItem
@@ -20,7 +19,7 @@ const SelectField = ({
             help={displayingErrorMessage}>
             <Select
                 {...input}
-                placeholder={name}
+                placeholder={placeholder}
                 defaultActiveFirstOption={false}
                 onSelect={onSelect}>
                 {arrayOfOptions}
@@ -29,6 +28,13 @@ const SelectField = ({
     )
 };
 
+SelectField.propTypes = {
+    input: PropTypes.object,
+    placeholder: PropTypes.string,
+    onSelect: PropTypes.func,
+    meta: PropTypes.object,
+    arrayOfOptions: PropTypes.array
+};
 
 export default hot(module)(SelectField)
 

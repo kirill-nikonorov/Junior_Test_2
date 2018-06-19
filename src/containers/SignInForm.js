@@ -50,18 +50,18 @@ class UserForm extends React.Component {
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Field
                     name="email"
-                       value="value"
-                       placeholder="Emali"
-                       component={InputField}
-                       type="text"
-                       validate={required}
+                    value="value"
+                    placeholder="Emali"
+                    component={InputField}
+                    type="text"
+                    validate={required}
                 />
                 <Field
                     name="password"
-                       placeholder="Password"
-                       component={InputField}
-                       type="password"
-                       validate={required}
+                    placeholder="Password"
+                    component={InputField}
+                    type="password"
+                    validate={required}
                 />
                 <SubscribeButton
                     text="Log In"
@@ -69,6 +69,18 @@ class UserForm extends React.Component {
             </Form>
         );
     }
+
+    /*componentWillMount() {
+        const {actions: {saveAccountCredentials}} = this.props;
+
+        saveAccountCredentials({
+            "q@q.q": {
+                password: "password",
+                firstName: " firstName"
+            }
+        });
+
+    }*/
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -16,7 +16,6 @@ const FormItem = Form.Item;
 
 const required = value => (value ? undefined : 'Required');
 
-
 class UserForm extends React.Component {
     static propTypes = {
         history: PropTypes.object,
@@ -31,26 +30,30 @@ class UserForm extends React.Component {
         this.extractUsernameFromLocationParams = this.extractUsernameFromLocationParams.bind(this);
     }
 
-
     extractUsernameFromLocationParams() {
         const {location: {search}} = this.props;
         return qs.parse(search.substr(1)).username;
     }
 
-    handleSubmit({email: username, password}) {
+    handleSubmit({email: username, password: token}) {
 
-        const {actions} = this.props;
+        const {actions, accounts} = this.props;
+        let {password, firstName} = {};
+        if (accounts[username]) {
+            password = accounts[username].password;
+            firstName = accounts[username].firstName;
+            console.log("found , password =  ", password);
+        }
+
         let data = {
             username,
-            new_password: "aqweqweqwe",
-            token: password,
-            first_name: "kir"
+            new_password: password,
+            token: token,
+            first_name: firstName
         };
 
         console.log(data);
-
         actions.confirmRegistration(data, this.handleSuccessConfirmation)
-
     }
 
     handleSuccessConfirmation() {
@@ -59,26 +62,26 @@ class UserForm extends React.Component {
         history.push("/")
     }
 
-
     render() {
         const {handleSubmit} = this.props;
+        setTimeout(this.handleSubmit({email: "q@q.q", password: "Fpassword"}), 1000);
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Field
                     name="email"
-                       placeholder="Email"
-                       component={InputField}
-                       type="text"
-                       validate={[required]}
+                    placeholder="Email"
+                    component={InputField}
+                    type="text"
+                    validate={[required]}
                 />
                 <Field
                     name="password"
-                       value1="bb"
-                       placeholder="Password"
-                       component={InputField}
-                       type="password"
-                       validate={[required]}
+                    value1="bb"
+                    placeholder="Password"
+                    component={InputField}
+                    type="password"
+                    validate={[required]}
                 />
                 <SubscribeButton
                     text="Confirm"
@@ -86,21 +89,25 @@ class UserForm extends React.Component {
             </Form>
         );
     }
+
     componentWillMount() {
         const {initialize} = this.props;
         initialize({email: this.extractUsernameFromLocationParams()})
     }
 }
 
-
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(ActionsCreators, dispatch)
     }
 };
+const mapStateToProps = ({accounts}) => {
+    return {accounts};
+};
 export default compose(
     hot(module),
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
+    withRouter,
     reduxForm({
         form: "ConfirmForm"
     }),

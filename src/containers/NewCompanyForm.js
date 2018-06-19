@@ -37,14 +37,11 @@ class UserForm extends React.Component {
             industryId: -1,
             subIndustryId: -1
         };
-
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.handleIndustrySelect = this.handleIndustrySelect.bind(this);
         this.handleSubIndustrySelect = this.handleSubIndustrySelect.bind(this);
-
         this.handleSuccessPost = this.handleSuccessPost.bind(this);
-
         /* setInterval(() => {
              console.log(this.state)
          }, 5000)*/
@@ -73,7 +70,6 @@ class UserForm extends React.Component {
     handleSelect(value, option) {
         const {key} = option;
         const {industries} = this.state;
-
         if (industries.map(industry => (industry.id)).indexOf(parseInt(key)) !== -1)
             this.handleIndustrySelect(key);
         else this.handleSubIndustrySelect(key)
@@ -114,29 +110,29 @@ class UserForm extends React.Component {
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Field
                     name="company"
-                       placeholder="Company"
-                       component={InputField}
-                       type="text"
-                       validate={[required]}
+                    placeholder="Company"
+                    component={InputField}
+                    type="text"
+                    validate={[required]}
                 />
                 <Field
                     name="industry"
-                       placeholder="Industry"
-                       component={SelectField}
-                       onSelect={this.handleSelect}
-                       arrayOfOptions={industriesOptions}
-                       validate={[required]}
+                    placeholder="Industry"
+                    component={SelectField}
+                    onSelect={this.handleSelect}
+                    arrayOfOptions={industriesOptions}
+                    validate={[required]}
                 />
                 <Field
                     name="subindustry"
-                       placeholder="Subindustry"
-                       component={SelectField}
-                       onSelect={this.handleSelect}
-                       arrayOfOptions={subIndustriesOptions}
-                       validate={[required]}
+                    placeholder="Subindustry"
+                    component={SelectField}
+                    onSelect={this.handleSelect}
+                    arrayOfOptions={subIndustriesOptions}
+                    validate={[required]}
                 />
                 <SubscribeButton
-                text="Create"
+                    text="Create"
                 />
             </Form>
         )
@@ -175,7 +171,7 @@ export default compose(
     hot(module),
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-     reduxForm({form: "CompanyForm"}),
+    reduxForm({form: "CompanyForm"}),
 )(UserForm)
 
 

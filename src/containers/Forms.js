@@ -8,6 +8,7 @@ import SignUpCompleteForm from "./SignUpCompleteForm";
 
 import {hot} from "react-hot-loader";
 import {Row, Col, Layout} from 'antd';
+
 const {Header, Content} = Layout;
 
 const App = () => (
