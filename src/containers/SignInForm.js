@@ -3,14 +3,13 @@ import {bindActionCreators, compose} from "redux"
 import {withRouter} from 'react-router-dom'
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
-import namespace from "../../lib/namespace"
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
 import {Form, Input, Button} from 'antd';
 import PropTypes from "prop-types";
 
-import InputField from "./InputField"
-import SubscribeButton from "./SubscribeButton"
+import InputField from "../components/InputField"
+import SubscribeButton from "../components/SubscribeButton"
 
 const FormItem = Form.Item;
 
@@ -46,20 +45,23 @@ class UserForm extends React.Component {
     }
 
     render() {
-        let {handleSubmit} = this.props.reduxForm;
+        let {handleSubmit} = this.props;
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
-                <Field name="email"
+                <Field
+                    name="email"
+                       value="value"
                        placeholder="Emali"
                        component={InputField}
                        type="text"
-                       validate={[required]}
+                       validate={required}
                 />
-                <Field name="password"
+                <Field
+                    name="password"
                        placeholder="Password"
                        component={InputField}
                        type="password"
-                       validate={[required]}
+                       validate={required}
                 />
                 <SubscribeButton
                     text="Log In"
@@ -79,8 +81,7 @@ export default compose(
     hot(module),
     withRouter,
     connect(null, mapDispatchToProps),
-    namespace("reduxForm", reduxForm({form: "CompanyForm"})),
-    Form.create()
+    reduxForm({form: "CompanyForm"}),
 )(UserForm)
 
 

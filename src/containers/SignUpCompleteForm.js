@@ -3,15 +3,14 @@ import {bindActionCreators, compose} from "redux"
 import {withRouter} from 'react-router-dom'
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
-import namespace from "../../lib/namespace"
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
 import {Form} from 'antd';
 import qs from 'qs';
 import PropTypes from "prop-types";
 
-import InputField from "./InputField"
-import SubscribeButton from "./SubscribeButton"
+import InputField from "../components/InputField"
+import SubscribeButton from "../components/SubscribeButton"
 
 const FormItem = Form.Item;
 
@@ -35,8 +34,7 @@ class UserForm extends React.Component {
 
     extractUsernameFromLocationParams() {
         const {location: {search}} = this.props;
-        console.log(search);
-        return "dd";
+        return qs.parse(search.substr(1)).username;
     }
 
     handleSubmit({email: username, password}) {
@@ -63,19 +61,19 @@ class UserForm extends React.Component {
 
 
     render() {
-        const {handleSubmit} = this.props.reduxForm;
+        const {handleSubmit} = this.props;
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
-                <Field name="email"
-                       value="value"
-                       value1="aa"
+                <Field
+                    name="email"
                        placeholder="Email"
                        component={InputField}
                        type="text"
                        validate={[required]}
                 />
-                <Field name="password"
+                <Field
+                    name="password"
                        value1="bb"
                        placeholder="Password"
                        component={InputField}
@@ -88,7 +86,12 @@ class UserForm extends React.Component {
             </Form>
         );
     }
+    componentWillMount() {
+        const {initialize} = this.props;
+        initialize({email: this.extractUsernameFromLocationParams()})
+    }
 }
+
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -98,8 +101,9 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     hot(module),
     connect(null, mapDispatchToProps),
-    namespace("reduxForm", reduxForm({form: "ConfirmForm"})),
-    Form.create()
+    reduxForm({
+        form: "ConfirmForm"
+    }),
 )(UserForm)
 
 

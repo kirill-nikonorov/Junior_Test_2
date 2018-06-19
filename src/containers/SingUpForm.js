@@ -8,12 +8,11 @@ import {withRouter} from 'react-router-dom';
 import * as ActionsCreators from "../actions/actions"
 import "react-bootstrap";
 import {Form, Input, Row, Col, Button} from "antd/lib/index";
-import namespace from "../../lib/namespace";
 import PropTypes from 'prop-types';
 import qs from "qs";
 
-import InputField from "./InputField"
-import SubscribeButton from "./SubscribeButton"
+import InputField from "../components/InputField"
+import SubscribeButton from "../components/SubscribeButton"
 
 const FormItem = Form.Item;
 
@@ -35,7 +34,6 @@ const validateForm = ({password, confirmPassword}) => {
 class SingUpForm extends React.Component {
     static propTypes = {
         actions: PropTypes.object,
-        form: PropTypes.object,
         history: PropTypes.object,
         location: PropTypes.object,
         match: PropTypes.object,
@@ -44,10 +42,7 @@ class SingUpForm extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {confirmDirty: false};
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.renderField = this.renderField.bind(this);
         this.extractCompanyIdFromLocationParams = this.extractCompanyIdFromLocationParams.bind(this);
         this.handleSuccessPost = this.handleSuccessPost.bind(this);
     }
@@ -94,28 +89,8 @@ class SingUpForm extends React.Component {
         history.push(`/signupcomplete?username=${username}`);
     }
 
-    renderField({
-                    input,
-                    input: {name},
-                    placeholder,
-                    meta: {touched, error},
-                    type
-                }) {
-        const displayingErrorMessage = touched && error ? error : "";
-        return (
-            <FormItem
-                validateStatus={displayingErrorMessage ? "error" : ""}
-                help={displayingErrorMessage}>
-                <Input
-                    {...input}
-                    placeholder={placeholder}
-                    type={type}/>
-            </FormItem>
-        )
-    }
-
     render() {
-        const {handleSubmit} = this.props.reduxForm;
+        const {handleSubmit} = this.props;
         return (
             <Form layout='horizontal' onSubmit={handleSubmit(this.handleSubmit)}>
                 <Row gutter={6}>
@@ -178,20 +153,13 @@ const mapDispatchToProps = (dispatch) => {
         actions: bindActionCreators(ActionsCreators, dispatch)
     }
 };
-const mapStateToProps = ({form}) => {
-    /*  form.UserSinUpForm &&
-      form.UserSinUpForm.values &&
-      console.log(form.UserSinUpForm.values);*/
-    return {}
-};
 
 export default compose(
     hot(module),
-    connect(mapStateToProps, mapDispatchToProps),
-    namespace("reduxForm", reduxForm({
+    connect(null, mapDispatchToProps),
+    reduxForm({
         form: "UserSinUpForm",
         validate: validateForm
-    })),
-    Form.create()
+    })
 )(SingUpForm)
 

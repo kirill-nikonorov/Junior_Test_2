@@ -3,20 +3,18 @@ import {withRouter} from 'react-router-dom';
 import {bindActionCreators, compose} from "redux"
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
-import namespace from "../../lib/namespace"
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
 import {Form, Input, Button, Select} from 'antd';
 import 'antd/dist/antd.css';
 import PropTypes from "prop-types";
 
-import InputField from "./InputField"
-import SubscribeButton from "./SubscribeButton"
-import SelectField from "./SelectField"
+import InputField from "../components/InputField"
+import SubscribeButton from "../components/SubscribeButton"
+import SelectField from "../components/SelectField"
 
 const Option = Select.Option;
 const FormItem = Form.Item;
-
 
 const required = value => (value ? undefined : 'Required');
 
@@ -24,7 +22,6 @@ class UserForm extends React.Component {
     static propTypes = {
         industries: PropTypes.array,
         subIndustries: PropTypes.object,
-        form: PropTypes.object,
         history: PropTypes.object,
         actions: PropTypes.object,
         location: PropTypes.object,
@@ -43,9 +40,6 @@ class UserForm extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
-
-        this.renderSelect = this.renderSelect.bind(this);
-
         this.handleIndustrySelect = this.handleIndustrySelect.bind(this);
         this.handleSubIndustrySelect = this.handleSubIndustrySelect.bind(this);
 
@@ -58,9 +52,7 @@ class UserForm extends React.Component {
 
 
     handleSubmit({company}) {
-
         const {actions} = this.props;
-
         const {industryId, subIndustryId} = this.state;
 
         let data = {
@@ -76,31 +68,6 @@ class UserForm extends React.Component {
         const {history} = this.props;
 
         history.push("/signup?CompanyID=" + id);
-    }
-
-    renderSelect({
-                     input,
-                     input: {name},
-                     placeholder,
-                     onSelect,
-                     arrayOfOptions,
-                     meta: {error, touched},
-                 }) {
-        const displayedError = touched && error ? error : "";
-
-        return (
-            <FormItem
-                validateStatus={displayedError ? "error" : ""}
-                help={displayedError}>
-                <Select
-                    {...input}
-                    placeholder={name}
-                    defaultActiveFirstOption={false}
-                    onSelect={onSelect}>
-                    {arrayOfOptions}
-                </Select>
-            </FormItem>
-        )
     }
 
     handleSelect(value, option) {
@@ -141,24 +108,27 @@ class UserForm extends React.Component {
             subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}
                                                                  value={subIndustry.name}>{subIndustry.name}</Option>) : [];
 
-        const {handleSubmit} = this.props.reduxForm;
+        const {handleSubmit} = this.props;
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
-                <Field name="company"
+                <Field
+                    name="company"
                        placeholder="Company"
                        component={InputField}
                        type="text"
                        validate={[required]}
                 />
-                <Field name="industry"
+                <Field
+                    name="industry"
                        placeholder="Industry"
                        component={SelectField}
                        onSelect={this.handleSelect}
                        arrayOfOptions={industriesOptions}
                        validate={[required]}
                 />
-                <Field name="subindustry"
+                <Field
+                    name="subindustry"
                        placeholder="Subindustry"
                        component={SelectField}
                        onSelect={this.handleSelect}
@@ -187,7 +157,6 @@ class UserForm extends React.Component {
 }
 
 const mapStateToProps = ({companyTypes: {industries, subIndustries}}) => {
-    //state.form.CompanyForm && console.log(state.form.CompanyForm.values);
     return (
         {
             industries,
@@ -206,8 +175,7 @@ export default compose(
     hot(module),
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-    namespace("reduxForm", reduxForm({form: "CompanyForm"})),
-    Form.create()
+     reduxForm({form: "CompanyForm"}),
 )(UserForm)
 
 

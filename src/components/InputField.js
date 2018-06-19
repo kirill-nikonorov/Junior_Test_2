@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 const FormItem = Form.Item;
 
+
 const InputField = ({
                         input,
                         value1,
@@ -14,8 +15,6 @@ const InputField = ({
                         type
                     }) => {
     const displayingErrorMessage = touched && error ? error : "";
-/*    console.log(value);
-    console.log(value1);*/
     return (
         <FormItem
             validateStatus={displayingErrorMessage ? "error" : ""}

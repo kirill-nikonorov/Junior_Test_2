@@ -1,17 +1,14 @@
 import React from "react"
 import {Route, Switch, Link} from 'react-router-dom';
 
-import SingUpForm from "../components/SingUpForm";
-import NewCompanyForm from "../components/NewCompanyForm";
-import SignInForm from "../components/SignInForm";
-import SignUpCompleteForm from "../components/SignUpCompleteForm";
+import SingUpForm from "./SingUpForm";
+import NewCompanyForm from "./NewCompanyForm";
+import SignInForm from "./SignInForm";
+import SignUpCompleteForm from "./SignUpCompleteForm";
 
 import {hot} from "react-hot-loader";
-
 import {Row, Col, Layout} from 'antd';
-
 const {Header, Content} = Layout;
-
 
 const App = () => (
     <Row type="flex" justify="center">
