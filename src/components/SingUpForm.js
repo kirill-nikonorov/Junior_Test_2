@@ -9,51 +9,63 @@ import * as ActionsCreators from "../actions/actions"
 import "react-bootstrap";
 import {Form, Input, Row, Col, Button} from "antd/lib/index";
 import namespace from "../../lib/namespace";
+import PropTypes from 'prop-types';
 import qs from "qs";
+
+import InputField from "./InputField"
+import SubscribeButton from "./SubscribeButton"
 
 const FormItem = Form.Item;
 
+const required = value => (value ? undefined : 'Required');
+const minLength = min => value =>
+    value && value.length < min ? `At least ${min} characters ` : undefined;
+const minLength6 = minLength(6);
+
+const validateForm = ({password, confirmPassword}) => {
+    const errorMesseage = "Two passwords that you enter is inconsistent!";
+    return password && confirmPassword && password !== confirmPassword ?
+        {
+            password: errorMesseage,
+            confirmPassword: errorMesseage
+        } : {};
+};
+
 
 class SingUpForm extends React.Component {
+    static propTypes = {
+        actions: PropTypes.object,
+        form: PropTypes.object,
+        history: PropTypes.object,
+        location: PropTypes.object,
+        match: PropTypes.object,
+        reduxForm: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
 
         this.state = {confirmDirty: false};
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderField = this.renderField.bind(this);
-        this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
-        this.compareToFirstPassword = this.compareToFirstPassword.bind(this);
-        this.validateToNextPassword = this.validateToNextPassword.bind(this);
-        this.postNewUser = this.postNewUser.bind(this);
         this.extractCompanyIdFromLocationParams = this.extractCompanyIdFromLocationParams.bind(this);
         this.handleSuccessPost = this.handleSuccessPost.bind(this);
     }
 
 
-    handleSubmit(e) {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                this.postNewUser(values)
-            }
-        });
-        //  console.log("Subscribed")
-    }
-
-    postNewUser(values) {
+    handleSubmit({
+                     email: username,
+                     password,
+                     firstName,
+                     lastName,
+                     mobile
+                 }) {
 
         const {actions} = this.props,
-            {
-                Email: username,
-                Password: password,
-                ['First name']: firstName,
-                ['Last name']: lastName,
-                Mobile: mobile
-            } = values,
             companyId = this.extractCompanyIdFromLocationParams();
 
         console.log(companyId);
+        console.log(this.props);
 
         const data = {
             username,
@@ -73,7 +85,7 @@ class SingUpForm extends React.Component {
     }
 
     extractCompanyIdFromLocationParams() {
-        let {location: {search}} = this.props;
+        const {location: {search}} = this.props;
         return qs.parse(search.substr(1)).companyID;
     }
 
@@ -82,121 +94,82 @@ class SingUpForm extends React.Component {
         history.push(`/signupcomplete?username=${username}`);
     }
 
-    handleConfirmBlur(e) {
-        const value = e.target.value;
-        this.setState({confirmDirty: this.state.confirmDirty || !!value});
-    }
-
-    compareToFirstPassword(rule, value, callback) {
-        const form = this.props.form;
-        if (value && value !== form.getFieldValue('Password')) {
-            callback('Two passwords that you enter is inconsistent!');
-        } else {
-            callback();
-        }
-    }
-
-    validateToNextPassword(rule, value, callback) {
-        const form = this.props.form;
-        if (value && this.state.confirmDirty) {
-            form.validateFields(['Confirm Password'], {force: true});
-        }
-        callback();
-    };
-
     renderField({
                     input,
                     input: {name},
-                    meta,
-                    formItemLayout,
-                    type,
-                    validatorFunction
+                    placeholder,
+                    meta: {touched, error},
+                    type
                 }) {
-        delete input.value;
-
-        const {getFieldDecorator} = this.props.form;
+        const displayingErrorMessage = touched && error ? error : "";
         return (
             <FormItem
-                {...meta}
-                {...formItemLayout}
-            >
-                {getFieldDecorator(`${name}`, {
-                    rules: [{required: true, message: 'field required'},
-                        validatorFunction ? {validator: validatorFunction, message: 'passowrd validation'} : {}]
-                })(<Input
+                validateStatus={displayingErrorMessage ? "error" : ""}
+                help={displayingErrorMessage}>
+                <Input
                     {...input}
-                    placeholder={name}
-                    autoComplete="off"
-                    type={type}
-                />)
-                }
+                    placeholder={placeholder}
+                    type={type}/>
             </FormItem>
         )
     }
 
-
     render() {
-        const formItemLayout = {
-            wrapperCol: {span: 24},
-        };
-
+        const {handleSubmit} = this.props.reduxForm;
         return (
-            <Form layout='horizontal' onSubmit={this.handleSubmit}>
+            <Form layout='horizontal' onSubmit={handleSubmit(this.handleSubmit)}>
                 <Row gutter={6}>
                     <Col span={12}>
                         <Field
-                            name="First name"
-                            component={this.renderField}
+                            name="firstName"
+                            placeholder="First Name"
+                            component={InputField}
+                            validate={required}
                         />
                     </Col>
                     <Col span={12}>
                         <Field
-                            name="Last name"
-                            component={this.renderField}
+                            name="lastName"
+                            placeholder="Last Name"
+                            component={InputField}
+                            validate={required}
                         />
                     </Col>
                 </Row>
                 <Field
-                    name="Mobile"
-                    component={this.renderField}
-                    formItemLayout={formItemLayout}
+                    name="mobile"
+                    placeholder="Mobile"
+                    component={InputField}
                     type="number"
                 />
                 <Field
-                    name="Email"
-                    component={this.renderField}
-                    formItemLayout={formItemLayout}
+                    name="email"
+                    placeholder="Email"
+                    component={InputField}
                     type="email"
+                    validate={required}
                 />
                 <Field
-                    name="Password"
-                    component={this.renderField}
-                    formItemLayout={formItemLayout}
+                    name="password"
+                    placeholder="Password"
+                    component={InputField}
                     type="password"
-                    validatorFunction={this.validateToNextPassword}
-
+                    validate={[required, minLength6]}
                 />
                 <Field
-                    name="Confirm Password"
-                    component={this.renderField}
-                    formItemLayout={formItemLayout}
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    component={InputField}
                     type="password"
-                    onBlur={this.handleConfirmBlur}
-                    validatorFunction={this.compareToFirstPassword}
+                    validate={required}
                 />
-                <FormItem
-                    {...formItemLayout}>
-                    <Button type="primary"
-                            htmlType="submit"
-                            style={{width: "100%"}}
-                    >Sign up</Button>
+                <SubscribeButton
+                    text="Sign up"
+                />
 
-                </FormItem>
             </Form>
-
         );
     }
-
 }
 
 
@@ -205,11 +178,20 @@ const mapDispatchToProps = (dispatch) => {
         actions: bindActionCreators(ActionsCreators, dispatch)
     }
 };
+const mapStateToProps = ({form}) => {
+    /*  form.UserSinUpForm &&
+      form.UserSinUpForm.values &&
+      console.log(form.UserSinUpForm.values);*/
+    return {}
+};
 
 export default compose(
     hot(module),
-    connect(null, mapDispatchToProps),
-    namespace("reduxForm", reduxForm({form: "UserSinUpForm"})),
+    connect(mapStateToProps, mapDispatchToProps),
+    namespace("reduxForm", reduxForm({
+        form: "UserSinUpForm",
+        validate: validateForm
+    })),
     Form.create()
 )(SingUpForm)
 

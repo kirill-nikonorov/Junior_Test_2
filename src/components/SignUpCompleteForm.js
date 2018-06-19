@@ -6,42 +6,40 @@ import {hot} from "react-hot-loader";
 import namespace from "../../lib/namespace"
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
-import {Form,  Input, Button} from 'antd';
-//import 'antd/dist/antd.css';
+import {Form} from 'antd';
 import qs from 'qs';
+import PropTypes from "prop-types";
+
+import InputField from "./InputField"
+import SubscribeButton from "./SubscribeButton"
 
 const FormItem = Form.Item;
 
+const required = value => (value ? undefined : 'Required');
+
 
 class UserForm extends React.Component {
+    static propTypes = {
+        history: PropTypes.object,
+        actions: PropTypes.object,
+    };
+
     constructor(props) {
         super(props);
 
-        const {actions} = this.props;
-
-        this.state = {
-            actions
-        };
-
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.renderField = this.renderField.bind(this);
-        this.confirmRegistration = this.confirmRegistration.bind(this);
-        this.handleSuccessAuthorization = this.handleSuccessAuthorization.bind(this);
-        this.extractCompanyIdFromLocationParams = this.extractCompanyIdFromLocationParams.bind(this);
-
+        this.handleSuccessConfirmation = this.handleSuccessConfirmation.bind(this);
+        this.extractUsernameFromLocationParams = this.extractUsernameFromLocationParams.bind(this);
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                this.confirmRegistration(values);
-            }
-        });
+
+    extractUsernameFromLocationParams() {
+        const {location: {search}} = this.props;
+        console.log(search);
+        return "dd";
     }
 
-    confirmRegistration({Email: username, Password: password}) {
+    handleSubmit({email: username, password}) {
 
         const {actions} = this.props;
         let data = {
@@ -53,81 +51,42 @@ class UserForm extends React.Component {
 
         console.log(data);
 
-        actions.confirmRegistration(data, this.handleSuccessAuthorization)
+        actions.confirmRegistration(data, this.handleSuccessConfirmation)
+
     }
 
-    handleSuccessAuthorization() {
+    handleSuccessConfirmation() {
         const {history} = this.props;
         console.log("SUCCESS CONFIRM");
         history.push("/")
     }
 
-    renderField({
-                    input,
-                    input: {name},
-                    meta,
-                    formItemLayout,
-                    type
-                }) {
-        delete input.value;
-        const {getFieldDecorator} = this.props.form;
-        return (
-            <FormItem
-                {...meta}
-                {...formItemLayout}
-            >
-                {getFieldDecorator(`${name}`, {
-                    rules: [{required: true, message: `Require`}]
-                })(
-                    <Input
-                        {...input}
-                        placeholder={name}
-                        autoComplete="off"
-                        type={type}
-                    />
-                )
-                }
-            </FormItem>
-        )
-    }
-    extractCompanyIdFromLocationParams() {
-        let {location: {search}} = this.props;
-        return qs.parse(search.substr(1)).username;
-    };
 
     render() {
-        const formItemLayout = {
-        };
+        const {handleSubmit} = this.props.reduxForm;
 
         return (
-                <Form layout="horizontal" onSubmit={this.handleSubmit}>
-                    <Field name="Email"
-                           component={this.renderField}
-                           type="text"
-                           value="dsd"
-                    />
-                    <Field name="Password"
-                           component={this.renderField}
-                           type="password"
-                    />
-
-                    <FormItem
-                        {...formItemLayout}>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            style={{width: "100%"}}
-                        >
-                            Confirm
-                        </Button>
-                    </FormItem>
-                </Form>
+            <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
+                <Field name="email"
+                       value="value"
+                       value1="aa"
+                       placeholder="Email"
+                       component={InputField}
+                       type="text"
+                       validate={[required]}
+                />
+                <Field name="password"
+                       value1="bb"
+                       placeholder="Password"
+                       component={InputField}
+                       type="password"
+                       validate={[required]}
+                />
+                <SubscribeButton
+                    text="Confirm"
+                />
+            </Form>
         );
-    }
-    componentDidMount(){
-        console.log("componentDidMount");
-        const {setFieldsValue} = this.props.form;
-        setFieldsValue({Email : "метод Заглушки"})
     }
 }
 
@@ -136,11 +95,10 @@ const mapDispatchToProps = (dispatch) => {
         actions: bindActionCreators(ActionsCreators, dispatch)
     }
 };
-
 export default compose(
     hot(module),
     connect(null, mapDispatchToProps),
-    namespace("reduxForm", reduxForm({form: "CompanyForm"})),
+    namespace("reduxForm", reduxForm({form: "ConfirmForm"})),
     Form.create()
 )(UserForm)
 

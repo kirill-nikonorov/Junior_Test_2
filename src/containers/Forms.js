@@ -34,7 +34,9 @@ const App = () => (
                 <br/>
                 <Link to={"/signup?"}>Регистрация</Link>
                 <br/>
-                <Link to={"/signupcomplete?username=11"}>Подтверждение регистрации</Link>
+                <Link to={"/signupcomplete"}>Подтверждение регистрации</Link>
+                <br/>
+                <Link to={"/signupcomplete?username=aa@aa.aaa"}>Подтверждение регистрации с параметрами</Link>
                 <br/>
                 <Link to={"/createnewcompany"}>Создать Команию</Link>
             </div>

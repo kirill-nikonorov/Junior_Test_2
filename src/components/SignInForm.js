@@ -6,45 +6,38 @@ import {hot} from "react-hot-loader";
 import namespace from "../../lib/namespace"
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
-import {Form,  Input, Button} from 'antd';
-//import 'antd/dist/antd.css';
+import {Form, Input, Button} from 'antd';
+import PropTypes from "prop-types";
+
+import InputField from "./InputField"
+import SubscribeButton from "./SubscribeButton"
 
 const FormItem = Form.Item;
 
+const required = value => (value ? undefined : 'Required');
 
 class UserForm extends React.Component {
+    static propTypes = {
+        history: PropTypes.object,
+        actions: PropTypes.object,
+    };
+
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.renderField = this.renderField.bind(this);
-        this.authorize = this.authorize.bind(this);
         this.handleSuccessAuthorization = this.handleSuccessAuthorization.bind(this);
-
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                this.authorize(values);
-            }
-        });
-    }
-
-    authorize({Email: username, Password: password}) {
-
+    handleSubmit({email: username, password}) {
         const {actions} = this.props;
-
         const data = {
             username,
             password,
         };
-
         console.log(data);
-
         actions.authUser(data, this.handleSuccessAuthorization)
     }
+
 
     handleSuccessAuthorization() {
         const {history} = this.props;
@@ -52,57 +45,25 @@ class UserForm extends React.Component {
         console.log("SUCCESS AUTHORIZATION")
     }
 
-    renderField({
-                    input,
-                    input: {name},
-                    meta,
-                    formItemLayout,
-                    type
-                }) {
-        delete input.value;
-
-        const {getFieldDecorator} = this.props.form;
-        return (
-            <FormItem
-                {...meta}
-                {...formItemLayout}
-            >
-                {getFieldDecorator(`${name}`, {
-                    rules: [{required: true, message: `Require`}]
-                })(
-                    <Input
-                        {...input}
-                        placeholder={name}
-                        type={type}
-                    />
-                )
-                }
-            </FormItem>
-        )
-    }
-
     render() {
+        let {handleSubmit} = this.props.reduxForm;
         return (
-            <Form layout="horizontal" onSubmit={this.handleSubmit}>
-                <Field name="Email"
-                       component={this.renderField}
+            <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
+                <Field name="email"
+                       placeholder="Emali"
+                       component={InputField}
                        type="text"
+                       validate={[required]}
                 />
-                <Field name="Password"
-                       component={this.renderField}
+                <Field name="password"
+                       placeholder="Password"
+                       component={InputField}
                        type="password"
+                       validate={[required]}
                 />
-
-                <FormItem
-                >
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        style={{width: "100%"}}
-                    >
-                        Log In
-                    </Button>
-                </FormItem>
+                <SubscribeButton
+                    text="Log In"
+                />
             </Form>
         );
     }

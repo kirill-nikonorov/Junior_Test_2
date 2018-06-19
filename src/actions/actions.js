@@ -78,7 +78,7 @@ export const postNewUser = (data, onSuccess) => () => {
         .then((responce) => {
             console.log(responce);
 
-            onSuccess(responce.data.id)
+            onSuccess(responce.data.username)
         })
         .catch(({response, request, message}) => {
 
