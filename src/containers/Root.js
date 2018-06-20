@@ -1,14 +1,8 @@
 import React from "react"
 import {Provider} from "react-redux";
 import {Route, Switch, Link} from 'react-router-dom';
-
-import Forms from "./Forms"
-
-
 import {Row, Col, Layout} from 'antd';
-
 const {Content, Sider, Header} = Layout;
-
 import {hot} from "react-hot-loader";
 import PropTypes from "prop-types";
 
@@ -16,7 +10,6 @@ import SignInForm from "./SignInForm";
 import SignUpCompleteForm from "./SignUpCompleteForm";
 import NewCompanyForm from "./NewCompanyForm";
 import SingUpForm from "./SingUpForm";
-
 
 const Root = ({store}) => {
 
@@ -34,7 +27,8 @@ const Root = ({store}) => {
         {to: "/createnewcompany", label: "Создать Команию"}
     ];
     const linksPart = (
-        <div>
+        <div style={{backgroundColor: "#ffe474", padding: "10px"}}>
+            <span>Ссылки на время разработки</span>
             {links.map((linkData) => (
                 <div key={linkData.label}>
                     <Link to={linkData.to}>{linkData.label}</Link>

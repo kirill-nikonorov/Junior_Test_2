@@ -2,10 +2,10 @@ import {combineReducers} from "redux"
 
 import {SAVE_INDUSTRIES, SAVE_SUB_INDUSTRIES} from "../constants/constants";
 
-const industriesReduser = (state = [], action) => {
+const industriesReduser = (state = {}, action) => {
     switch (action.type) {
         case SAVE_INDUSTRIES :
-            return [...state, ...action.industries];
+            return Object.assign({}, state, action.industries);
         default:
             return state;
     }

@@ -18,10 +18,13 @@ const SelectField = ({
             validateStatus={displayingErrorMessage ? "error" : ""}
             help={displayingErrorMessage}>
             <Select
+                showSearch
                 {...input}
                 placeholder={placeholder}
                 defaultActiveFirstOption={false}
-                onSelect={onSelect}>
+                onSelect={onSelect}
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            >
                 {arrayOfOptions}
             </Select>
         </FormItem>

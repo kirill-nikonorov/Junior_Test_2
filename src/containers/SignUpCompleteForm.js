@@ -36,29 +36,24 @@ class UserForm extends React.Component {
     }
 
     handleSubmit({email: username, token}) {
-
         const {actions} = this.props,
             data = {
                 username,
                 token
             };
-
         console.log(data);
         actions.confirmRegistration(data, this.handleSuccessConfirmation)
     }
 
-    handleSuccessConfirmation(token) {
+    handleSuccessConfirmation() {
+        console.log("SUCCESS CONFIRMATION");
         const {history} = this.props;
         history.push("/")
     }
 
-
-    // console.log("SUCCESS CONFIRM  , token = ", token);
-
-
     render() {
         const {handleSubmit} = this.props;
-        setTimeout(this.handleSubmit({email: "q@q.q", token: "Fpassword"}), 2000);
+        // setTimeout(this.handleSubmit({email: "q@q.q", token: "Fpassword"}), 2000);
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>

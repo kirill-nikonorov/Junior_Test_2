@@ -145,7 +145,7 @@ class SingUpForm extends React.Component {
     }
 
     componentWillMount() {
-        const {initialize} = this.props;
+       /* const {initialize} = this.props;
         initialize({
                 firstName: "qwe",
                 lastName: "qwe",
@@ -153,7 +153,7 @@ class SingUpForm extends React.Component {
                 password: "password",
                 confirmPassword: "password"
             }
-        )
+        )*/
     }
 }
 

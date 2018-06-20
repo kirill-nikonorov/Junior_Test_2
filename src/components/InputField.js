@@ -20,7 +20,9 @@ const InputField = ({
             <Input
                 {...input}
                 placeholder={placeholder}
-                type={type}/>
+                type={type}
+                style={{appea: "button"}}
+            />
         </FormItem>
     )
 };

@@ -20,7 +20,7 @@ const required = value => (value ? undefined : 'Required');
 
 class UserForm extends React.Component {
     static propTypes = {
-        industries: PropTypes.array,
+        industries: PropTypes.object,
         subIndustries: PropTypes.object,
         history: PropTypes.object,
         actions: PropTypes.object,
@@ -38,13 +38,9 @@ class UserForm extends React.Component {
             subIndustryId: -1
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
         this.handleIndustrySelect = this.handleIndustrySelect.bind(this);
         this.handleSubIndustrySelect = this.handleSubIndustrySelect.bind(this);
         this.handleSuccessPost = this.handleSuccessPost.bind(this);
-        /* setInterval(() => {
-             console.log(this.state)
-         }, 5000)*/
     }
 
 
@@ -67,15 +63,8 @@ class UserForm extends React.Component {
         history.push("/signup?CompanyID=" + id);
     }
 
-    handleSelect(value, option) {
-        const {key} = option;
-        const {industries} = this.state;
-        if (industries.map(industry => (industry.id)).indexOf(parseInt(key)) !== -1)
-            this.handleIndustrySelect(key);
-        else this.handleSubIndustrySelect(key)
-    }
-
-    handleIndustrySelect(key) {
+    handleIndustrySelect(value, {key}) {
+        console.log("industy");
         const {industryId, subIndustries} = this.state,
             {actions} = this.props;
         if (industryId !== key) {
@@ -88,7 +77,9 @@ class UserForm extends React.Component {
         }
     }
 
-    handleSubIndustrySelect(key) {
+    handleSubIndustrySelect(value, {key}) {
+        console.log("subind");
+
         const {subIndustryId} = this.state;
         if (subIndustryId !== key) {
             this.setState({subIndustryId: key})
@@ -96,10 +87,10 @@ class UserForm extends React.Component {
     }
 
     render() {
-
         const {industries, subIndustries, industryId} = this.state;
-        const industriesOptions = industries.map(industry => <Option key={industry.id}
-                                                                     value={industry.name}>{industry.name}</Option>);
+
+        const industriesOptions = Object.values(industries).map(industry => <Option key={industry.id}
+                                                                                    value={industry.name}>{industry.name}</Option>);
         const subIndustriesOptions = subIndustries[industryId] ?
             subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}
                                                                  value={subIndustry.name}>{subIndustry.name}</Option>) : [];
@@ -119,7 +110,7 @@ class UserForm extends React.Component {
                     name="industry"
                     placeholder="Industry"
                     component={SelectField}
-                    onSelect={this.handleSelect}
+                    onSelect={this.handleIndustrySelect}
                     arrayOfOptions={industriesOptions}
                     validate={[required]}
                 />
@@ -127,7 +118,7 @@ class UserForm extends React.Component {
                     name="subindustry"
                     placeholder="Subindustry"
                     component={SelectField}
-                    onSelect={this.handleSelect}
+                    onSelect={this.handleSubIndustrySelect}
                     arrayOfOptions={subIndustriesOptions}
                     validate={[required]}
                 />
@@ -135,11 +126,10 @@ class UserForm extends React.Component {
                     text="Create"
                 />
             </Form>
-        )
-            ;
+        );
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const {actions} = this.props;
         actions.fetchIndustries();
     }

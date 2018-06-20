@@ -37,11 +37,10 @@ class UserForm extends React.Component {
         actions.authUser(data, this.handleSuccessAuthorization)
     }
 
-
     handleSuccessAuthorization() {
         const {history} = this.props;
         history.push("/");
-        console.log("SUCCESS AUTHORIZATION")
+        console.log("SUCCESS AUTHORIZATION ")
     }
 
     render() {

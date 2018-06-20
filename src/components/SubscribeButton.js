@@ -6,7 +6,6 @@ import {Form, Button} from 'antd';
 
 const FormItem = Form.Item;
 
-
 const SubscribeButton = ({text}) => {
     return (
         <FormItem>
@@ -15,7 +14,6 @@ const SubscribeButton = ({text}) => {
                     style={{width: "100%"}}>
                 {text}
             </Button>
-
         </FormItem>
     )
 };

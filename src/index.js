@@ -9,14 +9,10 @@ import Root from "./containers/Root"
 
 let store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
-/*let a = setInterval(() => {
+/* setInterval(() => {
     console.log(store.getState())
-}, 10000);*/
-/*
-let a = setInterval(() => {
-    console.log(store.getState().companyTypes.subIndustries)
-}, 3000);
-*/
+}, 4000);*/
+
 
 render(
     <Router>

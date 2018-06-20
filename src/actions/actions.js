@@ -3,67 +3,56 @@ import axios from "axios"
 import {notification} from "antd/lib/index";
 
 export const fetchIndustries = () => (dispath) => {
-    axios.get('http://doc.konnex.us/industries/', {
-        params: {
-            page_size: 100
-        }
-    })
-        .then((responce) => {
-            dispath(saveIndustries(responce.data.results))
-        })
-        .catch((error) => {
-            console.log(error)
+    const data = {params: {page_size: 100}};
+    makeRequest("get", `http://doc.konnex.us/industries/`, data
+        , ({data: {results}}) => {
+            dispath(saveIndustries(results))
         });
 };
 export const fetchSubIndustries = (industryId) => (dispath) => {
-    axios.get(`http://doc.konnex.us/industries/${industryId}/sub_industries/`,
-        {
-            params: {
-                page_size: 100
-            }
-        })
-        .then((responce) => {
-            dispath(saveSubIndustries(responce.data.results, industryId))
-        })
-        .catch((error) => {
-            console.log(error)
+    const data = {params: {page_size: 100}};
+    makeRequest("get", `http://doc.konnex.us/industries/${industryId}/sub_industries/`, data
+        , ({data: {results}}) => {
+            dispath(saveSubIndustries(results, industryId))
         });
-
 };
-
-export const postNewUser = (data, onSuccess) => (dispatch) => {
-    postData("http://doc.konnex.us/user/register/", data, onSuccess);
+export const postNewUser = (data, onSuccess) => () => {
+    makeRequest("post", " http://doc.konnex.us/user/register/", data, onSuccess);
 };
 export const postNewIndividualUser = (data, onSuccess) => () => {
-    postData("http://doc.konnex.us/user/register-individual/", data, onSuccess);
+    makeRequest("post", "http://doc.konnex.us/user/register-individual/", data, onSuccess);
 };
 export const postNewCompany = (data, onSuccess) => () => {
-    postData("http://doc.konnex.us/public/companies/", data, ({data: {id}}) => {
+    makeRequest("post", "http://doc.konnex.us/public/companies/", data, ({data: {id}}) => {
         onSuccess(id)
     });
 };
 export const authUser = (data, onSuccess) => (dispath) => {
-    postData("http://doc.konnex.us/user/auth/", data, ({data: {token}}) => {
+    makeRequest("post", "http://doc.konnex.us/user/auth/", data, ({data: {token}}) => {
+        showSuccessNotification("success authorization");
         dispath(saveToken(token));
-        onSuccess(token)
+        onSuccess()
     });
 };
 export const confirmRegistration = (data, onSuccess) => (dispath) => {
-    postData("http://doc.konnex.us/user/register-confirm-by-username/", data, ({data: {token}}) => {
+    makeRequest("post", "http://doc.konnex.us/user/register-confirm-by-username/", data, ({data: {token}}) => {
+        showSuccessNotification("success confirmation");
         dispath(saveToken(token));
-        onSuccess(token)
+        onSuccess()
     });
 };
 
-const postData = (url, data, onSuccess) => {
-    axios.post(url, data, {
+const makeRequest = (method, url, data, onSuccess) => {
+    axios({
+        method: method,
+        url: url,
+        data: data,
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
     })
         .then((response) => {
-            console.log(response);
             onSuccess(response)
         })
         .catch(({response, request, message}) => {
@@ -82,7 +71,6 @@ const postData = (url, data, onSuccess) => {
             } else {
                 showErrorNotification('', message);
                 console.log(message);
-
                 console.log('Error', message);
             }
         });
@@ -90,8 +78,12 @@ const postData = (url, data, onSuccess) => {
 
 const saveIndustries = (industries) => ({
     type: types.SAVE_INDUSTRIES,
-    industries
+    industries: Object.values(industries).reduce((obj, industry) => {
+        obj[industry.id] = industry;
+        return obj;
+    }, {})
 });
+
 const saveSubIndustries = (subIndustries, industryId) => {
     return {
         type: types.SAVE_SUB_INDUSTRIES,
@@ -113,9 +105,6 @@ const saveToken = (token) => ({
 });
 
 export const showErrorNotification = (status = "0", data) => {
-    /*    console.log("notification , status = ", status);
-        console.log("notification , data = ", data);*/
-
     let problems = [];
     if (!(data instanceof Object) || Array.isArray(data)) problems = data;
     else {
@@ -123,9 +112,6 @@ export const showErrorNotification = (status = "0", data) => {
             problems.push(`${prop} : ${data[prop]} \n`)
         })
     }
-
-    // console.log(problems);
-
     notification["error"]({
         duration: 2,
         message: status,
@@ -133,3 +119,9 @@ export const showErrorNotification = (status = "0", data) => {
     });
 };
 
+export const showSuccessNotification = (message) => {
+    notification["success"]({
+        duration: 2,
+        message: message
+    });
+};
