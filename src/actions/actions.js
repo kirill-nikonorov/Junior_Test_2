@@ -34,98 +34,25 @@ export const fetchSubIndustries = (industryId) => (dispath) => {
 export const postNewUser = (data, onSuccess) => (dispatch) => {
     postData("http://doc.konnex.us/user/register/", data, onSuccess);
 };
-/*export const postNewIndividualUser = (data, onSuccess) => () => {
-    postData("http://doc.konnex.us/user/register-individual/", data, onSuccess);
-};*/
-
-export const postNewCompany = (data, onSuccess) => () => {
-    axios.post("http://doc.konnex.us/public/companies/", data, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        }
-    })
-        .then((responce) => {
-            console.log(responce);
-            onSuccess(responce.data.id)
-        })
-        .catch(({response, request, message}) => {
-
-            if (response) {
-                const {data, status} = response;
-                showErrorNotification(status, data);
-
-            } else if (request) {
-                console.log(request);
-                showErrorNotification('', request);
-            } else {
-                showErrorNotification('', message);
-                console.log('Error', message);
-
-            }
-        });
-};
-export const authUser = (data, onSuccess) => (dispath) => {
-    axios.post("http://doc.konnex.us/user/auth/", data, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        }
-    })
-        .then(({data: {token}}) => {
-            dispath(saveToken(token));
-            onSuccess()
-        })
-        .catch(({response, request, message}) => {
-            if (response) {
-                const {data, status} = response;
-                showErrorNotification(status, data);
-
-            } else if (request) {
-                console.log(request);
-                showErrorNotification('', request);
-            } else {
-                showErrorNotification('', message);
-                console.log('Error', message);
-
-            }
-        });
-};
-export const confirmRegistration = (data, onSuccess) => (dispath) => {
-    axios.post("http://doc.konnex.us/user/register-confirm-by-username/", data, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        }
-    })
-        .then(({data: {token}}) => {
-            dispath(saveToken(token));
-            onSuccess(token)
-        })
-        .catch(({response, request, message}) => {
-            if (response) {
-
-                const {data, status} = response;
-                if (status === 500 && isAssertionError(data))
-                    handleAssertionError();
-                else
-                    showErrorNotification(status, data);
-
-            } else if (request) {
-                console.log(request);
-                showErrorNotification('', request);
-            } else {
-                showErrorNotification('', message);
-                console.log('Error', message);
-
-            }
-        });
-
-};
-
-
 export const postNewIndividualUser = (data, onSuccess) => () => {
     postData("http://doc.konnex.us/user/register-individual/", data, onSuccess);
+};
+export const postNewCompany = (data, onSuccess) => () => {
+    postData("http://doc.konnex.us/public/companies/", data, ({data: {id}}) => {
+        onSuccess(id)
+    });
+};
+export const authUser = (data, onSuccess) => (dispath) => {
+    postData("http://doc.konnex.us/user/auth/", data, ({data: {token}}) => {
+        dispath(saveToken(token));
+        onSuccess(token)
+    });
+};
+export const confirmRegistration = (data, onSuccess) => (dispath) => {
+    postData("http://doc.konnex.us/user/register-confirm-by-username/", data, ({data: {token}}) => {
+        dispath(saveToken(token));
+        onSuccess(token)
+    });
 };
 
 const postData = (url, data, onSuccess) => {
@@ -136,14 +63,18 @@ const postData = (url, data, onSuccess) => {
         }
     })
         .then((response) => {
+            console.log(response);
             onSuccess(response)
         })
         .catch(({response, request, message}) => {
 
             if (response) {
                 const {data, status} = response;
-                console.log(data);
-                showErrorNotification(status, data);
+
+                if (status === 500 && isAssertionError(data))
+                    handleAssertionError();
+                else
+                    showErrorNotification(status, data);
 
             } else if (request) {
                 console.log(request);
