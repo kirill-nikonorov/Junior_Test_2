@@ -60,12 +60,13 @@ class SingUpForm extends React.Component {
             companyId = this.extractCompanyIdFromLocationParams();
         console.log(companyId);
         const data = {
-            username,
-            password,
-            first_name: firstName,
-            last_name: lastName,
-            mobile
-        }, onSuccessPost = () => this.handleSuccessPost(username, password, firstName);
+                username,
+                password,
+                first_name: firstName,
+                last_name: lastName,
+                mobile
+            },
+            onSuccessPost = () => this.handleSuccessPost(username);
 
         if (companyId) {
             data.company = companyId;
@@ -82,9 +83,8 @@ class SingUpForm extends React.Component {
         return qs.parse(search.substr(1)).companyID;
     }
 
-    handleSuccessPost(username, password, firstName) {
-        const {history, actions} = this.props;
-        actions.saveAccountCredentials({[username]: {firstName, password}});
+    handleSuccessPost(username) {
+        const {history} = this.props;
         history.push(`/signupcomplete?username=${username}`);
     }
 

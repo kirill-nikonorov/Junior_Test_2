@@ -31,13 +31,13 @@ export const fetchSubIndustries = (industryId) => (dispath) => {
 
 };
 
-
 export const postNewUser = (data, onSuccess) => (dispatch) => {
     postData("http://doc.konnex.us/user/register/", data, onSuccess);
 };
-export const postNewIndividualUser = (data, onSuccess) => () => {
+/*export const postNewIndividualUser = (data, onSuccess) => () => {
     postData("http://doc.konnex.us/user/register-individual/", data, onSuccess);
-};
+};*/
+
 export const postNewCompany = (data, onSuccess) => () => {
     axios.post("http://doc.konnex.us/public/companies/", data, {
         headers: {
@@ -92,7 +92,7 @@ export const authUser = (data, onSuccess) => (dispath) => {
         });
 };
 export const confirmRegistration = (data, onSuccess) => (dispath) => {
-    axios.patch("http://doc.konnex.us/user/register-set-password-and-confirm/", data, {
+    axios.post("http://doc.konnex.us/user/register-confirm-by-username/", data, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -100,8 +100,7 @@ export const confirmRegistration = (data, onSuccess) => (dispath) => {
     })
         .then(({data: {token}}) => {
             dispath(saveToken(token));
-
-            onSuccess()
+            onSuccess(token)
         })
         .catch(({response, request, message}) => {
             if (response) {
@@ -123,6 +122,12 @@ export const confirmRegistration = (data, onSuccess) => (dispath) => {
         });
 
 };
+
+
+export const postNewIndividualUser = (data, onSuccess) => () => {
+    postData("http://doc.konnex.us/user/register-individual/", data, onSuccess);
+};
+
 const postData = (url, data, onSuccess) => {
     axios.post(url, data, {
         headers: {
@@ -151,11 +156,6 @@ const postData = (url, data, onSuccess) => {
             }
         });
 };
-
-export const saveAccountCredentials = (data) => ({
-    type: types.SAVE_ACCOUNT_CREDENTIALS,
-    data
-});
 
 const saveIndustries = (industries) => ({
     type: types.SAVE_INDUSTRIES,

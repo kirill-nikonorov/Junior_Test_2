@@ -35,36 +35,30 @@ class UserForm extends React.Component {
         return qs.parse(search.substr(1)).username;
     }
 
-    handleSubmit({email: username, password: token}) {
+    handleSubmit({email: username, token}) {
 
-        const {actions, accounts} = this.props;
-        let {password, firstName} = {};
-        if (accounts[username]) {
-            password = accounts[username].password;
-            firstName = accounts[username].firstName;
-            console.log("found , password =  ", password);
-        }
-
-        let data = {
-            username,
-            new_password: password,
-            token: token,
-            first_name: firstName
-        };
+        const {actions} = this.props,
+            data = {
+                username,
+                token
+            };
 
         console.log(data);
         actions.confirmRegistration(data, this.handleSuccessConfirmation)
     }
 
-    handleSuccessConfirmation() {
+    handleSuccessConfirmation(token) {
         const {history} = this.props;
-        console.log("SUCCESS CONFIRM");
         history.push("/")
     }
 
+
+    // console.log("SUCCESS CONFIRM  , token = ", token);
+
+
     render() {
         const {handleSubmit} = this.props;
-        setTimeout(this.handleSubmit({email: "q@q.q", password: "Fpassword"}), 1000);
+        setTimeout(this.handleSubmit({email: "q@q.q", token: "Fpassword"}), 2000);
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
@@ -76,9 +70,8 @@ class UserForm extends React.Component {
                     validate={[required]}
                 />
                 <Field
-                    name="password"
-                    value1="bb"
-                    placeholder="Password"
+                    name="token"
+                    placeholder="Token"
                     component={InputField}
                     type="password"
                     validate={[required]}
@@ -101,12 +94,10 @@ const mapDispatchToProps = (dispatch) => {
         actions: bindActionCreators(ActionsCreators, dispatch)
     }
 };
-const mapStateToProps = ({accounts}) => {
-    return {accounts};
-};
+
 export default compose(
     hot(module),
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(null, mapDispatchToProps),
     withRouter,
     reduxForm({
         form: "ConfirmForm"
