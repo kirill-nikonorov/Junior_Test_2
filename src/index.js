@@ -7,9 +7,10 @@ import {BrowserRouter as Router,} from 'react-router-dom';
 import rootReducer from "./reducers/rootReducer";
 import Root from "./containers/Root"
 
+
 let store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
- setInterval(() => {
+setInterval(() => {
     console.log(store.getState())
 }, 4000);
 

@@ -1,21 +1,23 @@
-import * as types from "../constants/constants"
 import axios from "axios"
 import {notification} from "antd/lib/index";
+import {actions as companyOrientationsActions} from "../../lib/symbiote/companyOrientations"
+import {actions as tokenActions} from "../../lib/symbiote/token"
 
 export const fetchIndustries = () => (dispath) => {
     const data = {params: {page_size: 100}};
     makeRequest("get", `http://doc.konnex.us/industries/`, data
         , ({data: {results}}) => {
-            dispath(saveIndustries(results))
+            dispath(companyOrientationsActions.industries.saveIndustries(results))
         });
 };
 export const fetchSubIndustries = (industryId) => (dispath) => {
     const data = {params: {page_size: 100}};
     makeRequest("get", `http://doc.konnex.us/industries/${industryId}/sub_industries/`, data
         , ({data: {results}}) => {
-            dispath(saveSubIndustries(results, industryId))
+            dispath(companyOrientationsActions.subIndustries.saveSubIndustries(results, industryId))
         });
 };
+
 export const postNewUser = (data, onSuccess) => () => {
     makeRequest("post", " http://doc.konnex.us/user/register/", data, onSuccess);
 };
@@ -30,14 +32,14 @@ export const postNewCompany = (data, onSuccess) => () => {
 export const authUser = (data, onSuccess) => (dispath) => {
     makeRequest("post", "http://doc.konnex.us/user/auth/", data, ({data: {token}}) => {
         showSuccessNotification("success authorization");
-        dispath(saveToken(token));
+        dispath(tokenActions.saveToken(token));
         onSuccess()
     });
 };
 export const confirmRegistration = (data, onSuccess) => (dispath) => {
     makeRequest("post", "http://doc.konnex.us/user/register-confirm-by-username/", data, ({data: {token}}) => {
         showSuccessNotification("success confirmation");
-        dispath(saveToken(token));
+        dispath(tokenActions.saveToken(token));
         onSuccess()
     });
 };
@@ -76,21 +78,6 @@ const makeRequest = (method, url, data, onSuccess) => {
         });
 };
 
-const saveIndustries = (industries) => ({
-    type: types.SAVE_INDUSTRIES,
-    industries: Object.values(industries).reduce((obj, industry) => {
-        obj[industry.id] = industry;
-        return obj;
-    }, {})
-});
-
-const saveSubIndustries = (subIndustries, industryId) => {
-    return {
-        type: types.SAVE_SUB_INDUSTRIES,
-        subIndustries,
-        industryId
-    };
-};
 const isAssertionError = (string) => {
     let errorType = string.split(' ');
     return errorType[0] = "AssertionError";
@@ -99,10 +86,6 @@ const handleAssertionError = () => {
     console.log("AssertionError");
     showErrorNotification(500, {detail: "not found"})
 };
-const saveToken = (token) => ({
-    type: types.SAVE_TOKEN,
-    token
-});
 
 export const showErrorNotification = (status = "0", data) => {
     let problems = [];
@@ -118,10 +101,10 @@ export const showErrorNotification = (status = "0", data) => {
         description: problems
     });
 };
-
 export const showSuccessNotification = (message) => {
     notification["success"]({
         duration: 2,
         message: message
     });
 };
+

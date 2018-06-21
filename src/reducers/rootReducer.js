@@ -1,26 +1,12 @@
 import {combineReducers} from "redux"
 import {reducer as formReducer} from "redux-form"
-
-import {SAVE_TOKEN} from "../constants/constants";
-import companyTypesReducer from "./companyTypesReducer"
-
-export const getTokenFromLocalStorage = () => {
-    return "токен изначально"
-};
-
-const tokenReducer = (state = getTokenFromLocalStorage(), action) => {
-    switch (action.type) {
-        case SAVE_TOKEN :
-            return action.token;
-        default:
-            return state;
-    }
-};
+import {reducer as companyOrientationsReducer} from '../../lib/symbiote/companyOrientations'
+import {reducer as tokenReducer} from '../../lib/symbiote/token'
 
 const rootReducer = combineReducers({
-    token: tokenReducer,
-    companyTypes: companyTypesReducer,
-    form: formReducer
-});
+        companyOrientations: companyOrientationsReducer,
+        token: tokenReducer,
+        form: formReducer
+    });
 
 export default rootReducer;

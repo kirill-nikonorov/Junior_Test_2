@@ -5,9 +5,8 @@ import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
-import {Form, Input, Button} from 'antd';
+import {Form} from 'antd';
 import PropTypes from "prop-types";
-
 import InputField from "../components/InputField"
 import SubscribeButton from "../components/SubscribeButton"
 
@@ -44,7 +43,8 @@ class UserForm extends React.Component {
     }
 
     render() {
-        let {handleSubmit} = this.props;
+
+        let {handleSubmit, actions: {authUser}} = this.props;
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Field
@@ -65,21 +65,17 @@ class UserForm extends React.Component {
                 <SubscribeButton
                     text="Log In"
                 />
+                <input type='button' value="Auth" onClick={
+                    () => authUser({
+                            "username": "sergej_sergej_nikonorov@mail.ru",
+                            "password": "206 chast 2"
+                        },
+                        () => {
+                        }
+                    )}/>
             </Form>
         );
     }
-
-    /*componentWillMount() {
-        const {actions: {saveAccountCredentials}} = this.props;
-
-        saveAccountCredentials({
-            "q@q.q": {
-                password: "password",
-                firstName: " firstName"
-            }
-        });
-
-    }*/
 }
 
 const mapDispatchToProps = (dispatch) => {

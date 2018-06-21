@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
 import * as ActionsCreators from "../actions/actions"
 import {Field, reduxForm} from "redux-form"
-import {Form, Input, Button, Select} from 'antd';
+import {Form, Select} from 'antd';
 import 'antd/dist/antd.css';
 import PropTypes from "prop-types";
 
@@ -81,7 +81,6 @@ class UserForm extends React.Component {
             subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}>
                 {subIndustry.name}</Option>) : [];
 
-
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Field
@@ -127,7 +126,7 @@ class UserForm extends React.Component {
     }
 }
 
-const mapStateToProps = ({companyTypes: {industries, subIndustries}, form: {CompanyForm}}) => {
+const mapStateToProps = ({companyOrientations: {industries, subIndustries}, form: {CompanyForm}}) => {
     const props = {
         industries,
         subIndustries,

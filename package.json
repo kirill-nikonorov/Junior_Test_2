@@ -19,6 +19,7 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-form": "^7.4.2",
+    "redux-symbiote": "^2.3.0",
     "redux-thunk": "^2.3.0",
     "styled-components": "^3.3.2"
   },
