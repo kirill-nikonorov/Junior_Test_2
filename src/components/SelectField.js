@@ -18,7 +18,8 @@ const SelectField = ({
             validateStatus={displayingErrorMessage ? "error" : ""}
             help={displayingErrorMessage}>
             <Select
-                showSearch
+                mode="combobox"
+                optionLabelProp="children"
                 {...input}
                 placeholder={placeholder}
                 defaultActiveFirstOption={false}

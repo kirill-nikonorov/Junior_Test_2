@@ -9,9 +9,9 @@ import Root from "./containers/Root"
 
 let store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
-/* setInterval(() => {
+ setInterval(() => {
     console.log(store.getState())
-}, 4000);*/
+}, 4000);
 
 
 render(

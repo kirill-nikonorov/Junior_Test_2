@@ -18,6 +18,8 @@ const FormItem = Form.Item;
 
 const required = value => (value ? undefined : 'Required');
 
+const isSelected = value => (parseInt(value) ? undefined : 'You should choose from list');
+
 class UserForm extends React.Component {
     static propTypes = {
         industries: PropTypes.object,
@@ -33,27 +35,22 @@ class UserForm extends React.Component {
         const {industries, subIndustries} = this.props;
         this.state = {
             industries,
-            subIndustries,
-            industryId: -1,
-            subIndustryId: -1
+            subIndustries
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleIndustrySelect = this.handleIndustrySelect.bind(this);
-        this.handleSubIndustrySelect = this.handleSubIndustrySelect.bind(this);
         this.handleSuccessPost = this.handleSuccessPost.bind(this);
     }
 
-
     handleSubmit({company}) {
-        const {actions} = this.props;
-        const {industryId, subIndustryId} = this.state;
+        const {actions, subIndustryId} = this.props;
+        const {industryId} = this.state;
 
         let data = {
             name: company,
             industry: industryId,
             sub_industry: subIndustryId
         };
-
         actions.postNewCompany(data, this.handleSuccessPost);
     }
 
@@ -64,38 +61,26 @@ class UserForm extends React.Component {
     }
 
     handleIndustrySelect(value, {key}) {
-        console.log("industy");
         const {industryId, subIndustries} = this.state,
             {actions} = this.props;
         if (industryId !== key) {
             (!subIndustries[key]
                 && actions.fetchSubIndustries(key)
             );
-            this.setState({
-                industryId: key,
-            });
-        }
-    }
-
-    handleSubIndustrySelect(value, {key}) {
-        console.log("subind");
-
-        const {subIndustryId} = this.state;
-        if (subIndustryId !== key) {
-            this.setState({subIndustryId: key})
         }
     }
 
     render() {
-        const {industries, subIndustries, industryId} = this.state;
 
-        const industriesOptions = Object.values(industries).map(industry => <Option key={industry.id}
-                                                                                    value={industry.name}>{industry.name}</Option>);
+        const {industries, subIndustries, industryId} = this.state,
+            {handleSubmit} = this.props;
+
+        const industriesOptions = Object.values(industries).map(industry => <Option key={industry.id}>
+            {industry.name}</Option>);
         const subIndustriesOptions = subIndustries[industryId] ?
-            subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}
-                                                                 value={subIndustry.name}>{subIndustry.name}</Option>) : [];
+            subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}>
+                {subIndustry.name}</Option>) : [];
 
-        const {handleSubmit} = this.props;
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
@@ -107,20 +92,19 @@ class UserForm extends React.Component {
                     validate={[required]}
                 />
                 <Field
-                    name="industry"
+                    name="industryId"
                     placeholder="Industry"
                     component={SelectField}
                     onSelect={this.handleIndustrySelect}
                     arrayOfOptions={industriesOptions}
-                    validate={[required]}
+                    validate={[required, isSelected]}
                 />
                 <Field
-                    name="subindustry"
+                    name="subIndustryId"
                     placeholder="Subindustry"
                     component={SelectField}
-                    onSelect={this.handleSubIndustrySelect}
                     arrayOfOptions={subIndustriesOptions}
-                    validate={[required]}
+                    validate={[required, isSelected]}
                 />
                 <SubscribeButton
                     text="Create"
@@ -134,21 +118,32 @@ class UserForm extends React.Component {
         actions.fetchIndustries();
     }
 
-    componentWillReceiveProps({industries, subIndustries}) {
+    componentWillReceiveProps({industries, subIndustries, industryId}) {
         this.setState({
             industries,
-            subIndustries
+            subIndustries,
+            industryId,
         })
     }
 }
 
-const mapStateToProps = ({companyTypes: {industries, subIndustries}}) => {
-    return (
-        {
-            industries,
-            subIndustries,
-        }
-    )
+const mapStateToProps = ({companyTypes: {industries, subIndustries}, form: {CompanyForm}}) => {
+    const props = {
+        industries,
+        subIndustries,
+    };
+    CompanyForm &&
+    CompanyForm.values &&
+    CompanyForm.values.industryId &&
+    (props["industryId"] = CompanyForm.values.industryId);
+
+    CompanyForm &&
+    CompanyForm.values &&
+    CompanyForm.values.subIndustryId &&
+    (props["subIndustryId"] = CompanyForm.values.subIndustryId);
+
+    return props;
+
 };
 
 const mapDispatchToProps = (dispatch) => {

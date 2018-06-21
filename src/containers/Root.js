@@ -2,6 +2,7 @@ import React from "react"
 import {Provider} from "react-redux";
 import {Route, Switch, Link} from 'react-router-dom';
 import {Row, Col, Layout} from 'antd';
+
 const {Content, Sider, Header} = Layout;
 import {hot} from "react-hot-loader";
 import PropTypes from "prop-types";
@@ -40,7 +41,7 @@ const Root = ({store}) => {
 
     const contentPart = (
         <Content style={{
-            background: 'url("/i.png")',
+            background: 'url("i.png")',
             backgroundSize: 'cover'
         }}/>
     );
