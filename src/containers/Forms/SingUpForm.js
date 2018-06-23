@@ -5,14 +5,14 @@ import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
 import {withRouter} from 'react-router-dom';
 
-import * as ActionsCreators from "../actions/actions"
+import * as ActionsCreators from "../../actions/actions"
 import "react-bootstrap";
 import {Form, Input, Row, Col, Button} from "antd/lib/index";
 import PropTypes from 'prop-types';
 import qs from "qs";
 
-import InputField from "../components/InputField"
-import SubscribeButton from "../components/SubscribeButton"
+import InputField from "../../components/InputField"
+import SubscribeButton from "../../components/SubscribeButton"
 
 const FormItem = Form.Item;
 

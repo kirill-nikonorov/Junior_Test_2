@@ -4,26 +4,29 @@
     "plugin:react/recommended"
   ],
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   },
   "plugins": [
     "react",
     "spellcheck"
   ],
   "globals": {
-    "localStorage": true ,
-    "console" : true ,
-    "alert" : true ,
-    "window" : true,
-    "document" : true,
-    "__dirname" : true
+    "localStorage": true,
+    "console": true,
+    "alert": true,
+    "window": true,
+    "document": true,
+    "__dirname": true
   },
   "env": {
-    "commonjs": true ,
+    "commonjs": true,
     "node": true
   },
   "rules": {
     "no-console": "off",
-    "no-case-declarations" : "off"
+    "no-case-declarations": "off"
   }
 }

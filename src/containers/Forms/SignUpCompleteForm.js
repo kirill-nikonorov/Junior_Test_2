@@ -3,14 +3,14 @@ import {bindActionCreators, compose} from "redux"
 import {withRouter} from 'react-router-dom'
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
-import * as ActionsCreators from "../actions/actions"
+import * as ActionsCreators from "../../actions/actions"
 import {Field, reduxForm} from "redux-form"
 import {Form} from 'antd';
 import qs from 'qs';
 import PropTypes from "prop-types";
 
-import InputField from "../components/InputField"
-import SubscribeButton from "../components/SubscribeButton"
+import InputField from "../../components/InputField"
+import SubscribeButton from "../../components/SubscribeButton"
 
 const FormItem = Form.Item;
 

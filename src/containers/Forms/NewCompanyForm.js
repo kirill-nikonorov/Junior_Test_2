@@ -3,15 +3,15 @@ import {withRouter} from 'react-router-dom';
 import {bindActionCreators, compose} from "redux"
 import {connect} from "react-redux";
 import {hot} from "react-hot-loader";
-import * as ActionsCreators from "../actions/actions"
+import * as ActionsCreators from "../../actions/actions"
 import {Field, reduxForm} from "redux-form"
 import {Form, Select} from 'antd';
 import 'antd/dist/antd.css';
 import PropTypes from "prop-types";
 
-import InputField from "../components/InputField"
-import SubscribeButton from "../components/SubscribeButton"
-import SelectField from "../components/SelectField"
+import InputField from "../../components/InputField"
+import SubscribeButton from "../../components/SubscribeButton"
+import SelectField from "../../components/SelectField"
 
 const Option = Select.Option;
 const FormItem = Form.Item;
