@@ -1,14 +1,11 @@
 import React from "react"
+import {hot} from "react-hot-loader";
 import {Route, Switch, Link} from 'react-router-dom';
 
-import SingUpForm from "./Forms/SingUpForm";
-import NewCompanyForm from "./Forms/NewCompanyForm";
-import SignInForm from "./Forms/SignInForm";
-import SignUpCompleteForm from "./Forms/SignUpCompleteForm";
+import {SingUpForm, NewCompanyForm, SignInForm, SignUpCompleteForm} from "./Forms";
 
-import {hot} from "react-hot-loader";
 
-const Forms = () => {
+const FormPart = () => {
     const routes =
         [
             {path: "/", component: SignInForm},
@@ -51,5 +48,5 @@ const Forms = () => {
 
 
 export default hot(module)((
-    Forms)
+    FormPart)
 );

@@ -7,7 +7,7 @@ const {Content, Sider, Header} = Layout;
 import {hot} from "react-hot-loader";
 import PropTypes from "prop-types";
 
-import Forms from "./FormPart";
+import FormPart from "./FormPart";
 
 
 const Root = ({store}) => {
@@ -18,7 +18,7 @@ const Root = ({store}) => {
                 <Link to={"/"}> Konnex </Link>
             </Header>
             <Content>
-                <Forms/>
+                <FormPart/>
                 {/*<input
                     type='button'
                     value="store"

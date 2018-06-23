@@ -1,5 +1,5 @@
 import axios from "axios" ;
-import {showErrorNotification} from "../actions/actions";
+import {showErrorNotification} from "../service";
 
 export default (config) => {
 
@@ -23,8 +23,7 @@ export default (config) => {
 
                 if (status === 500 && isAssertionError(data))
                     handleAssertionError();
-                else
-                    showErrorNotification(status, data);
+                else showErrorNotification(status, data);
 
             } else if (request) {
                 console.log(request);

@@ -1,5 +1,4 @@
-import axios from "axios"
-import {notification} from "antd/lib/index";
+import {showSuccessNotification} from "../service";
 import {actions as companyOrientationsActions} from "../../lib/symbiote/companyOrientations"
 import {actions as tokenActions} from "../../lib/symbiote/token"
 import api from "../api"
@@ -43,30 +42,9 @@ export const authUser = (data, onSuccess) => (dispath) => {
 export const confirmRegistration = (data, onSuccess) => (dispath) => {
     api.confirmRegistration(data)
         .then(({data: {token}}) => {
-        showSuccessNotification("success confirmation");
-        dispath(tokenActions.saveToken(token));
-        onSuccess()
-    });
-};
-
-export const showErrorNotification = (status = "0", data) => {
-    let problems = [];
-    if (!(data instanceof Object) || Array.isArray(data)) problems = data;
-    else {
-        Object.keys(data).map((prop) => {
-            problems.push(`${prop} : ${data[prop]} \n`)
-        })
-    }
-    notification["error"]({
-        duration: 2,
-        message: status,
-        description: problems
-    });
-};
-export const showSuccessNotification = (message) => {
-    notification["success"]({
-        duration: 2,
-        message: message
-    });
+            showSuccessNotification("success confirmation");
+            dispath(tokenActions.saveToken(token));
+            onSuccess()
+        });
 };
 
