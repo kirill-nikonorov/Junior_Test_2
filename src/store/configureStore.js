@@ -14,7 +14,7 @@ const configureStore = preloadedState => {
         preloadedState,
         compose(
             applyMiddleware(thunk),
-            persistState('token', {slicer})
+            persistState('token', slicer)
         )
     );
 
