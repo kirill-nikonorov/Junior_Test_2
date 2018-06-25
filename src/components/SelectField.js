@@ -1,21 +1,15 @@
-import React from "react";
-import {hot} from "react-hot-loader";
+import React from 'react';
+import {hot} from 'react-hot-loader';
 import {Form, Select} from 'antd';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const FormItem = Form.Item;
 
-const SelectField = ({
-                         input,
-                         placeholder,
-                         onSelect,
-                         arrayOfOptions,
-                         meta: {error, touched},
-                     }) => {
-    const displayingErrorMessage = touched && error ? error : "";
+const SelectField = ({input, placeholder, onSelect, arrayOfOptions, meta: {error, touched}}) => {
+    const displayingErrorMessage = touched && error ? error : '';
     return (
         <FormItem
-            validateStatus={displayingErrorMessage ? "error" : ""}
+            validateStatus={displayingErrorMessage ? 'error' : ''}
             help={displayingErrorMessage}>
             <Select
                 mode="combobox"
@@ -24,12 +18,13 @@ const SelectField = ({
                 placeholder={placeholder}
                 defaultActiveFirstOption={false}
                 onSelect={onSelect}
-                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            >
+                filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }>
                 {arrayOfOptions}
             </Select>
         </FormItem>
-    )
+    );
 };
 
 SelectField.propTypes = {
@@ -40,7 +35,4 @@ SelectField.propTypes = {
     arrayOfOptions: PropTypes.array
 };
 
-export default hot(module)(SelectField)
-
-
-
+export default hot(module)(SelectField);

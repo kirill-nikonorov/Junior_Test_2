@@ -9,7 +9,7 @@ const get = (url, config = {}) => {
 
 export default {
     getIndustries: () => get('industries/'),
-    getSubIndustries: (industryId) => get(`industries/${industryId}/sub_industries/`),
+    getSubIndustries: industryId => get(`industries/${industryId}/sub_industries/`),
 
-    postNewCompany: (data) => get('public/companies/', {data: data, method: "POST"}),
+    postNewCompany: data => get('public/companies/', {data: data, method: 'POST'})
 };

@@ -1,14 +1,14 @@
-import React from "react";
-import {bindActionCreators, compose} from "redux"
-import {withRouter} from 'react-router-dom'
-import {connect} from "react-redux";
-import {hot} from "react-hot-loader";
-import * as ActionsCreators from "../../actions/index"
-import {Field, reduxForm} from "redux-form"
+import React from 'react';
+import {bindActionCreators, compose} from 'redux';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {hot} from 'react-hot-loader';
+import * as ActionsCreators from '../../actions/index';
+import {Field, reduxForm} from 'redux-form';
 import {Form} from 'antd';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import {InputField  ,SubscribeButton  }from "../../components"
+import {InputField, SubscribeButton} from '../../components';
 
 const FormItem = Form.Item;
 
@@ -17,7 +17,7 @@ const required = value => (value ? undefined : 'Required');
 class UserForm extends React.Component {
     static propTypes = {
         history: PropTypes.object,
-        actions: PropTypes.object,
+        actions: PropTypes.object
     };
 
     constructor(props) {
@@ -30,21 +30,23 @@ class UserForm extends React.Component {
         const {actions} = this.props;
         const data = {
             username,
-            password,
+            password
         };
         console.log(data);
-        actions.authUser(data, this.handleSuccessAuthorization)
+        actions.authUser(data, this.handleSuccessAuthorization);
     }
 
     handleSuccessAuthorization() {
         const {history} = this.props;
-        history.push("/");
-        console.log("SUCCESS AUTHORIZATION ")
+        history.push('/');
+        console.log('SUCCESS AUTHORIZATION ');
     }
 
     render() {
-
-        let {handleSubmit, actions: {authUser}} = this.props;
+        let {
+            handleSubmit,
+            actions: {authUser}
+        } = this.props;
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Field
@@ -62,34 +64,37 @@ class UserForm extends React.Component {
                     type="password"
                     validate={required}
                 />
-                <SubscribeButton
-                    text="Log In"
+                <SubscribeButton text="Log In"/>
+                <input
+                    type="button"
+                    value="Auth"
+                    onClick={() =>
+                        authUser(
+                            {
+                                username: 'sergej_sergej_nikonorov@mail.ru',
+                                password: '206 chast 2'
+                            },
+                            () => {}
+                        )
+                    }
                 />
-                <input type='button' value="Auth" onClick={
-                    () => authUser({
-                            "username": "sergej_sergej_nikonorov@mail.ru",
-                            "password": "206 chast 2"
-                        },
-                        () => {
-                        }
-                    )}/>
             </Form>
         );
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(ActionsCreators, dispatch)
-    }
+    };
 };
 
 export default compose(
     hot(module),
     withRouter,
-    connect(null, mapDispatchToProps),
-    reduxForm({form: "CompanyForm"}),
-)(UserForm)
-
-
-
+    connect(
+        null,
+        mapDispatchToProps
+    ),
+    reduxForm({form: 'CompanyForm'})
+)(UserForm);

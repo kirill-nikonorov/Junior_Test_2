@@ -1,21 +1,19 @@
-import React from "react";
-import {bindActionCreators, compose} from "redux"
-import {Field, reduxForm} from "redux-form"
-import {connect} from "react-redux";
-import {hot} from "react-hot-loader";
+import React from 'react';
+import {bindActionCreators, compose} from 'redux';
+import {Field, reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
+import {hot} from 'react-hot-loader';
 import {withRouter} from 'react-router-dom';
 
-import * as ActionsCreators from "../../actions"
-import "react-bootstrap";
-import {Form, Row, Col} from "antd/lib/index";
+import * as ActionsCreators from '../../actions';
+import 'react-bootstrap';
+import {Form, Row, Col} from 'antd/lib/index';
 import PropTypes from 'prop-types';
-import qs from "qs";
+import qs from 'qs';
 
 const FormItem = Form.Item;
 
-
-import {InputField, SubscribeButton} from "../../components"
-
+import {InputField, SubscribeButton} from '../../components';
 
 const required = value => (value ? undefined : 'Required');
 const minLength = min => value =>
@@ -23,14 +21,14 @@ const minLength = min => value =>
 const minLength6 = minLength(6);
 
 const validateForm = ({password, confirmPassword}) => {
-    const errorMesseage = "Two passwords that you enter is inconsistent!";
-    return password && confirmPassword && password !== confirmPassword ?
-        {
-            password: errorMesseage,
-            confirmPassword: errorMesseage
-        } : {};
+    const errorMesseage = 'Two passwords that you enter is inconsistent!';
+    return password && confirmPassword && password !== confirmPassword
+        ? {
+              password: errorMesseage,
+              confirmPassword: errorMesseage
+          }
+        : {};
 };
-
 
 class SingUpForm extends React.Component {
     static propTypes = {
@@ -44,19 +42,13 @@ class SingUpForm extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.extractCompanyIdFromLocationParams = this.extractCompanyIdFromLocationParams.bind(this);
+        this.extractCompanyIdFromLocationParams = this.extractCompanyIdFromLocationParams.bind(
+            this
+        );
         this.handleSuccessPost = this.handleSuccessPost.bind(this);
     }
 
-
-    handleSubmit({
-                     email: username,
-                     password,
-                     firstName,
-                     lastName,
-                     mobile
-                 }) {
-
+    handleSubmit({email: username, password, firstName, lastName, mobile}) {
         const {actions} = this.props,
             companyId = this.extractCompanyIdFromLocationParams();
         console.log(companyId);
@@ -71,16 +63,17 @@ class SingUpForm extends React.Component {
 
         if (companyId) {
             data.company = companyId;
-            actions.postNewUser(data, onSuccessPost)
-        }
-        else {
-            actions.postNewIndividualUser(data, onSuccessPost)
+            actions.postNewUser(data, onSuccessPost);
+        } else {
+            actions.postNewIndividualUser(data, onSuccessPost);
         }
         console.log(data);
     }
 
     extractCompanyIdFromLocationParams() {
-        const {location: {search}} = this.props;
+        const {
+            location: {search}
+        } = this.props;
         return qs.parse(search.substr(1)).companyID;
     }
 
@@ -92,7 +85,7 @@ class SingUpForm extends React.Component {
     render() {
         const {handleSubmit} = this.props;
         return (
-            <Form layout='horizontal' onSubmit={handleSubmit(this.handleSubmit)}>
+            <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Row gutter={6}>
                     <Col span={12}>
                         <Field
@@ -111,12 +104,7 @@ class SingUpForm extends React.Component {
                         />
                     </Col>
                 </Row>
-                <Field
-                    name="mobile"
-                    placeholder="Mobile"
-                    component={InputField}
-                    type="number"
-                />
+                <Field name="mobile" placeholder="Mobile" component={InputField} type="number" />
                 <Field
                     name="email"
                     placeholder="Email"
@@ -138,9 +126,7 @@ class SingUpForm extends React.Component {
                     type="password"
                     validate={required}
                 />
-                <SubscribeButton
-                    text="Sign up"
-                />
+                <SubscribeButton text="Sign up" />
             </Form>
         );
     }
@@ -158,19 +144,21 @@ class SingUpForm extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(ActionsCreators, dispatch)
-    }
+    };
 };
 
 export default compose(
     hot(module),
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps
+    ),
     withRouter,
     reduxForm({
-        form: "UserSinUpForm",
+        form: 'UserSinUpForm',
         validate: validateForm
     })
-)(SingUpForm)
-
+)(SingUpForm);

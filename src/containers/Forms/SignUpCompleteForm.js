@@ -1,15 +1,15 @@
-import React from "react";
-import {bindActionCreators, compose} from "redux"
-import {withRouter} from 'react-router-dom'
-import {connect} from "react-redux";
-import {hot} from "react-hot-loader";
-import * as ActionsCreators from "../../actions/index"
-import {Field, reduxForm} from "redux-form"
+import React from 'react';
+import {bindActionCreators, compose} from 'redux';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {hot} from 'react-hot-loader';
+import * as ActionsCreators from '../../actions/index';
+import {Field, reduxForm} from 'redux-form';
 import {Form} from 'antd';
 import qs from 'qs';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import {InputField  ,SubscribeButton }from "../../components"
+import {InputField, SubscribeButton} from '../../components';
 
 const FormItem = Form.Item;
 
@@ -18,7 +18,7 @@ const required = value => (value ? undefined : 'Required');
 class UserForm extends React.Component {
     static propTypes = {
         history: PropTypes.object,
-        actions: PropTypes.object,
+        actions: PropTypes.object
     };
 
     constructor(props) {
@@ -30,7 +30,9 @@ class UserForm extends React.Component {
     }
 
     extractUsernameFromLocationParams() {
-        const {location: {search}} = this.props;
+        const {
+            location: {search}
+        } = this.props;
         return qs.parse(search.substr(1)).username;
     }
 
@@ -41,13 +43,13 @@ class UserForm extends React.Component {
                 token
             };
         console.log(data);
-        actions.confirmRegistration(data, this.handleSuccessConfirmation)
+        actions.confirmRegistration(data, this.handleSuccessConfirmation);
     }
 
     handleSuccessConfirmation() {
-        console.log("SUCCESS CONFIRMATION");
+        console.log('SUCCESS CONFIRMATION');
         const {history} = this.props;
-        history.push("/")
+        history.push('/');
     }
 
     render() {
@@ -70,33 +72,31 @@ class UserForm extends React.Component {
                     type="password"
                     validate={[required]}
                 />
-                <SubscribeButton
-                    text="Confirm"
-                />
+                <SubscribeButton text="Confirm" />
             </Form>
         );
     }
 
     componentWillMount() {
         const {initialize} = this.props;
-        initialize({email: this.extractUsernameFromLocationParams()})
+        initialize({email: this.extractUsernameFromLocationParams()});
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(ActionsCreators, dispatch)
-    }
+    };
 };
 
 export default compose(
     hot(module),
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps
+    ),
     withRouter,
     reduxForm({
-        form: "ConfirmForm"
-    }),
-)(UserForm)
-
-
-
+        form: 'ConfirmForm'
+    })
+)(UserForm);

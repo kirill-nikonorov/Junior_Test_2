@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 import {withRouter} from 'react-router-dom';
-import {bindActionCreators, compose} from "redux"
-import {connect} from "react-redux";
-import {hot} from "react-hot-loader";
-import * as ActionsCreators from "../../actions/index"
-import {Field, reduxForm} from "redux-form"
+import {bindActionCreators, compose} from 'redux';
+import {connect} from 'react-redux';
+import {hot} from 'react-hot-loader';
+import * as ActionsCreators from '../../actions/index';
+import {Field, reduxForm} from 'redux-form';
 import {Form, Select} from 'antd';
 import 'antd/dist/antd.css';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import {InputField  ,SubscribeButton , SelectField }from "../../components"
+import {InputField, SubscribeButton, SelectField} from '../../components';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -55,29 +55,29 @@ class UserForm extends React.Component {
     handleSuccessPost(id) {
         const {history} = this.props;
 
-        history.push("/signup?CompanyID=" + id);
+        history.push('/signup?CompanyID=' + id);
     }
 
     handleIndustrySelect(value, {key}) {
         const {industryId, subIndustries} = this.state,
             {actions} = this.props;
         if (industryId !== key) {
-            (!subIndustries[key]
-                && actions.fetchSubIndustries(key)
-            );
+            !subIndustries[key] && actions.fetchSubIndustries(key);
         }
     }
 
     render() {
-
         const {industries, subIndustries, industryId} = this.state,
             {handleSubmit} = this.props;
 
-        const industriesOptions = Object.values(industries).map(industry => <Option key={industry.id}>
-            {industry.name}</Option>);
-        const subIndustriesOptions = subIndustries[industryId] ?
-            subIndustries[industryId].map(subIndustry => <Option key={subIndustry.id}>
-                {subIndustry.name}</Option>) : [];
+        const industriesOptions = Object.values(industries).map(industry => (
+            <Option key={industry.id}>{industry.name}</Option>
+        ));
+        const subIndustriesOptions = subIndustries[industryId]
+            ? subIndustries[industryId].map(subIndustry => (
+                  <Option key={subIndustry.id}>{subIndustry.name}</Option>
+              ))
+            : [];
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
@@ -103,9 +103,7 @@ class UserForm extends React.Component {
                     arrayOfOptions={subIndustriesOptions}
                     validate={[required, isSelected]}
                 />
-                <SubscribeButton
-                    text="Create"
-                />
+                <SubscribeButton text="Create" />
             </Form>
         );
     }
@@ -119,42 +117,44 @@ class UserForm extends React.Component {
         this.setState({
             industries,
             subIndustries,
-            industryId,
-        })
+            industryId
+        });
     }
 }
 
-const mapStateToProps = ({companyOrientations: {industries, subIndustries}, form: {CompanyForm}}) => {
+const mapStateToProps = ({
+    companyOrientations: {industries, subIndustries},
+    form: {CompanyForm}
+}) => {
     const props = {
         industries,
-        subIndustries,
+        subIndustries
     };
     CompanyForm &&
-    CompanyForm.values &&
-    CompanyForm.values.industryId &&
-    (props["industryId"] = CompanyForm.values.industryId);
+        CompanyForm.values &&
+        CompanyForm.values.industryId &&
+        (props['industryId'] = CompanyForm.values.industryId);
 
     CompanyForm &&
-    CompanyForm.values &&
-    CompanyForm.values.subIndustryId &&
-    (props["subIndustryId"] = CompanyForm.values.subIndustryId);
+        CompanyForm.values &&
+        CompanyForm.values.subIndustryId &&
+        (props['subIndustryId'] = CompanyForm.values.subIndustryId);
 
     return props;
-
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(ActionsCreators, dispatch)
-    }
+    };
 };
 
 export default compose(
     hot(module),
     withRouter,
-    connect(mapStateToProps, mapDispatchToProps),
-    reduxForm({form: "CompanyForm"}),
-)(UserForm)
-
-
-
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
+    reduxForm({form: 'CompanyForm'})
+)(UserForm);

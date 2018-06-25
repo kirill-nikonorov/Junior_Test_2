@@ -1,10 +1,10 @@
-import {createStore, applyMiddleware, compose} from 'redux'
-import thunk from 'redux-thunk'
-import rootReducer from '../reducers/rootReducer'
+import {createStore, applyMiddleware, compose} from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from '../reducers/rootReducer';
 
-import persistState from "redux-localstorage";
+import persistState from 'redux-localstorage';
 
-const slicer = (paths) => (state) => {
+const slicer = () => state => {
     return state.token;
 };
 
@@ -14,21 +14,17 @@ const configureStore = preloadedState => {
         preloadedState,
         compose(
             applyMiddleware(thunk),
-            persistState("token", {slicer})
+            persistState('token', {slicer})
         )
     );
 
-
-
-
     if (module.hot) {
         module.hot.accept('../reducers/rootReducer', () => {
-            store.replaceReducer(rootReducer)
-        })
+            store.replaceReducer(rootReducer);
+        });
     }
 
-    return store
+    return store;
 };
 
-
-export default configureStore
+export default configureStore;
