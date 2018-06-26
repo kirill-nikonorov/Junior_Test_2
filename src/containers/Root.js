@@ -16,13 +16,14 @@ const Root = ({store}) => {
                 <Link to={'/'}> Konnex </Link>
             </Header>
             <Content>
-                <FormPart/>
+                <FormPart />
                 <input
-                    type='button'
+                    type="button"
                     value="log Store"
                     onClick={() => {
-                        console.log(store.getState())
-                    }}/>
+                        console.log(store.getState());
+                    }}
+                />
             </Content>
         </div>
     );

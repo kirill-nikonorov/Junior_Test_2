@@ -152,9 +152,6 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     hot(module),
     withRouter,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     reduxForm({form: 'CompanyForm'})
 )(UserForm);

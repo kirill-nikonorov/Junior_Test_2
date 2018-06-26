@@ -1,8 +1,8 @@
 {
-  "name": "dev-server-tamplate",
+  "name": "React-junior-test",
   "version": "0.0.1",
   "scripts": {
-    "start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server",
     "prettier": "prettier --write \"./src/**/*.js\""
   },
   "dependencies": {
@@ -22,8 +22,7 @@
     "redux-form": "^7.4.2",
     "redux-localstorage": "^0.4.1",
     "redux-symbiote": "^2.3.0",
-    "redux-thunk": "^2.3.0",
-    "styled-components": "^3.3.2"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
