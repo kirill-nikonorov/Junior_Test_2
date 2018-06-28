@@ -62,7 +62,7 @@ class UserForm extends React.Component {
                     type="password"
                     validate={required}
                 />
-                <SubscribeButton text="Log In"/>
+                <SubscribeButton text="Log In" />
                 {linkElement}
             </Form>
         );
@@ -81,7 +81,6 @@ export default compose(
     connect(null, mapDispatchToProps),
     reduxForm({form: 'CompanyForm'})
 )(UserForm);
-
 
 /*<input
                     type="button"

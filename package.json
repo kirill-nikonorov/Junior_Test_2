@@ -3,19 +3,18 @@
   "version": "0.0.1",
   "scripts": {
     "start": "webpack-dev-server --hot",
+    "build": "webpack",
     "prettier": "prettier --write \"./src/**/*.js\""
   },
   "dependencies": {
     "antd": "^3.6.1",
     "axios": "^0.18.0",
-    "eslint-plugin-react": "^7.9.1",
     "path": "^0.12.7",
     "prop-types": "^15.6.1",
     "qs": "^6.5.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
-    "react-hot-loader": "^4.0.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
@@ -26,12 +25,13 @@
     "styled-components": "^3.3.2"
   },
   "devDependencies": {
+    "eslint-plugin-react": "^7.9.1",
+    "react-hot-loader": "^4.0.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.12.0",

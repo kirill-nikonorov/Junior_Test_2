@@ -3,3 +3,4 @@ node_modules
 package-lock.json
 src/components/BattleField.js
 src/components/SecondField.js
+dist

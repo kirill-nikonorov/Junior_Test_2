@@ -8,7 +8,7 @@ module.exports = {
     },
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, './client/dist'),
+        path: path.resolve(__dirname, './dist'),
         publicPath: "/public"
     },
 
@@ -30,7 +30,6 @@ module.exports = {
     devtool: "source-map",
     plugins: [
         new webpack.NamedModulesPlugin()
-
     ],
     devServer: {
         contentBase: './public',
