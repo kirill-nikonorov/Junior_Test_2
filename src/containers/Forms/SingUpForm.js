@@ -50,9 +50,8 @@ class SingUpForm extends React.Component {
 
     handleSubmit({email: username, password, firstName, lastName, mobile}) {
         const {actions} = this.props,
-            companyId = this.extractCompanyIdFromLocationParams();
-        console.log(companyId);
-        const data = {
+            companyId = this.extractCompanyIdFromLocationParams(),
+            data = {
                 username,
                 password,
                 first_name: firstName,
@@ -67,7 +66,6 @@ class SingUpForm extends React.Component {
         } else {
             actions.postNewIndividualUser(data, onSuccessPost);
         }
-        console.log(data);
     }
 
     extractCompanyIdFromLocationParams() {
@@ -81,7 +79,7 @@ class SingUpForm extends React.Component {
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, linkElement} = this.props;
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Row gutter={6}>
@@ -125,19 +123,21 @@ class SingUpForm extends React.Component {
                     validate={required}
                 />
                 <SubscribeButton text="Sign up" />
+
+                {linkElement}
             </Form>
         );
     }
 
     componentWillMount() {
-        const {initialize} = this.props;
+        /*const {initialize} = this.props;
         initialize({
             firstName: 'qwe',
             lastName: 'qwe',
             email: 'eee@ee.ee',
             password: 'password',
             confirmPassword: 'password'
-        });
+        });*/
     }
 }
 

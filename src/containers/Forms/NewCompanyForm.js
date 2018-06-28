@@ -54,7 +54,6 @@ class UserForm extends React.Component {
 
     handleSuccessPost(id) {
         const {history} = this.props;
-
         history.push('/signup?CompanyID=' + id);
     }
 
@@ -68,16 +67,15 @@ class UserForm extends React.Component {
 
     render() {
         const {industries, subIndustries, industryId} = this.state,
-            {handleSubmit} = this.props;
-
-        const industriesOptions = Object.values(industries).map(industry => (
-            <Option key={industry.id}>{industry.name}</Option>
-        ));
-        const subIndustriesOptions = subIndustries[industryId]
-            ? subIndustries[industryId].map(subIndustry => (
-                  <Option key={subIndustry.id}>{subIndustry.name}</Option>
-              ))
-            : [];
+            {handleSubmit} = this.props,
+            industriesOptions = Object.values(industries).map(industry => (
+                <Option key={industry.id}>{industry.name}</Option>
+            )),
+            subIndustriesOptions = subIndustries[industryId]
+                ? subIndustries[industryId].map(subIndustry => (
+                      <Option key={subIndustry.id}>{subIndustry.name}</Option>
+                  ))
+                : [];
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>

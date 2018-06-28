@@ -62,6 +62,14 @@ export const confirmRegistration = (data, onSuccess) => dispath => {
         })
         .catch(handleError);
 };
+export const resendConfirmationCode = data => () => {
+    api
+        .resendConfirmationCode(data)
+        .then(() => {
+            showSuccessNotification('Successfully Sent');
+        })
+        .catch(handleError);
+};
 
 const handleError = ({response, request, message}) => {
     if (response) {

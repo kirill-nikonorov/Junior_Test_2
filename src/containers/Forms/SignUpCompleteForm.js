@@ -8,6 +8,7 @@ import {Field, reduxForm} from 'redux-form';
 import {Form} from 'antd';
 import qs from 'qs';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 import {InputField, SubscribeButton} from '../../components';
 
@@ -23,8 +24,8 @@ class UserForm extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleResendConfirmationCode = this.handleResendConfirmationCode.bind(this);
         this.handleSuccessConfirmation = this.handleSuccessConfirmation.bind(this);
         this.extractUsernameFromLocationParams = this.extractUsernameFromLocationParams.bind(this);
     }
@@ -44,6 +45,11 @@ class UserForm extends React.Component {
         actions.confirmRegistration(data, this.handleSuccessConfirmation);
     }
 
+    handleResendConfirmationCode() {
+        const {actions: {resendConfirmationCode}, email: username} = this.props;
+        resendConfirmationCode({username});
+    }
+
     handleSuccessConfirmation() {
         console.log('SUCCESS CONFIRMATION');
         const {history} = this.props;
@@ -52,7 +58,6 @@ class UserForm extends React.Component {
 
     render() {
         const {handleSubmit} = this.props;
-        // setTimeout(this.handleSubmit({email: "q@q.q", token: "Fpassword"}), 2000);
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
@@ -70,6 +75,9 @@ class UserForm extends React.Component {
                     type="password"
                     validate={[required]}
                 />
+                <Link to="#" onClick={this.handleResendConfirmationCode}>
+                    If an email does not arrive click here to resend
+                </Link>
                 <SubscribeButton text="Confirm" />
             </Form>
         );
@@ -81,6 +89,14 @@ class UserForm extends React.Component {
     }
 }
 
+const mapStateToProps = ({form: {ConfirmForm}}) => {
+    const props = {};
+    ConfirmForm &&
+        ConfirmForm.values &&
+        ConfirmForm.values.email &&
+        (props['email'] = ConfirmForm.values.email);
+    return props;
+};
 const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(ActionsCreators, dispatch)
@@ -89,7 +105,7 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     hot(module),
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withRouter,
     reduxForm({
         form: 'ConfirmForm'

@@ -5,37 +5,44 @@ import {Route, Switch, Link} from 'react-router-dom';
 import {SingUpForm, NewCompanyForm, SignInForm, SignUpCompleteForm} from './Forms';
 
 const FormPart = () => {
-    const routes = [
-        {path: '/', component: SignInForm},
-        {path: '/signup', component: SingUpForm},
-        {path: '/signupcomplete', component: SignUpCompleteForm},
-        {path: '/createnewcompany', component: NewCompanyForm}
-    ].map(routeData => (
-        <Route exact path={routeData.path} key={routeData.path} component={routeData.component} />
-    ));
+    const links = {
+        authLink: {to: '/', label: 'Авторизация'},
+        signInLink: {to: '/signup', label: 'Регистрация'},
+        signInCompleteLink: {to: '/signupcomplete', label: 'Подтверждение регистрации'},
+        createNewCompanyLink: {to: '/createnewcompany', label: 'Создать компанию'}
+    };
 
-    const links = [
-        {to: '/', label: 'Авторизация'},
-        {to: '/signup', label: 'Регистрация'},
-        {to: '/signupcomplete', label: 'Подтверждение регистрации'},
-        {
-            to: '/signupcomplete?username=aa@aa.aaa',
-            label: 'Подтверждение регистрации с параметрами'
-        },
-        {to: '/createnewcompany', label: 'Создать Команию'}
-    ];
+    const linksElements = Object.entries(links).reduce((readyLinks, [name, {to, label}]) => {
+        readyLinks[name] = (
+            <div key={label}>
+                <Link to={to}>{label}</Link>
+                <br />
+            </div>
+        );
+        return readyLinks;
+    }, {});
 
     const linksPart = (
-        <div style={{backgroundColor: '#ffe474', padding: '10px'}}>
+        <div style={{backgroundColor: '#ffe474', padding: '10px', bottom: '0'}}>
             <span>Ссылки на время разработки</span>
-            {links.map(linkData => (
-                <div key={linkData.label}>
-                    <Link to={linkData.to}>{linkData.label}</Link>
-                    <br />
-                </div>
-            ))}
+            {Object.values(linksElements)}
         </div>
     );
+
+    const routes = [
+        {path: '/', component: SignInForm, linkElement: linksElements.createNewCompanyLink},
+        {path: '/signup', component: SingUpForm, linkElement: linksElements.authLink},
+        {path: '/signupcomplete', component: SignUpCompleteForm},
+        {path: '/createnewcompany', component: NewCompanyForm}
+    ].map(({path, component, linkElement}) => (
+        <Route
+            exact
+            path={path}
+            key={path}
+            render={props => React.createElement(component, {...props, linkElement})}
+        />
+    ));
+
     return (
         <div>
             <Switch>{routes}</Switch>
