@@ -43,10 +43,7 @@ class UserForm extends React.Component {
     }
 
     render() {
-        let {
-            handleSubmit,
-            actions: {authUser}
-        } = this.props;
+        let {handleSubmit, actions: {authUser}} = this.props;
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
                 <Field
@@ -64,7 +61,7 @@ class UserForm extends React.Component {
                     type="password"
                     validate={required}
                 />
-                <SubscribeButton text="Log In"/>
+                <SubscribeButton text="Log In" />
                 <input
                     type="button"
                     value="Auth"
@@ -92,9 +89,6 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     hot(module),
     withRouter,
-    connect(
-        null,
-        mapDispatchToProps
-    ),
+    connect(null, mapDispatchToProps),
     reduxForm({form: 'CompanyForm'})
 )(UserForm);

@@ -71,9 +71,7 @@ class SingUpForm extends React.Component {
     }
 
     extractCompanyIdFromLocationParams() {
-        const {
-            location: {search}
-        } = this.props;
+        const {location: {search}} = this.props;
         return qs.parse(search.substr(1)).companyID;
     }
 
@@ -132,15 +130,14 @@ class SingUpForm extends React.Component {
     }
 
     componentWillMount() {
-        /* const {initialize} = this.props;
-         initialize({
-                 firstName: "qwe",
-                 lastName: "qwe",
-                 email: "eee@ee.ee",
-                 password: "password",
-                 confirmPassword: "password"
-             }
-         )*/
+        const {initialize} = this.props;
+        initialize({
+            firstName: 'qwe',
+            lastName: 'qwe',
+            email: 'eee@ee.ee',
+            password: 'password',
+            confirmPassword: 'password'
+        });
     }
 }
 
@@ -152,10 +149,7 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     hot(module),
-    connect(
-        null,
-        mapDispatchToProps
-    ),
+    connect(null, mapDispatchToProps),
     withRouter,
     reduxForm({
         form: 'UserSinUpForm',

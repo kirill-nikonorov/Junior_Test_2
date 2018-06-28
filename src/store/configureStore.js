@@ -12,10 +12,7 @@ const configureStore = preloadedState => {
     const store = createStore(
         rootReducer,
         preloadedState,
-        compose(
-            applyMiddleware(thunk),
-            persistState('token', slicer)
-        )
+        compose(applyMiddleware(thunk), persistState('token', slicer))
     );
 
     if (module.hot) {

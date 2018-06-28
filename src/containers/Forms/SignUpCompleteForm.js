@@ -30,9 +30,7 @@ class UserForm extends React.Component {
     }
 
     extractUsernameFromLocationParams() {
-        const {
-            location: {search}
-        } = this.props;
+        const {location: {search}} = this.props;
         return qs.parse(search.substr(1)).username;
     }
 
@@ -91,10 +89,7 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     hot(module),
-    connect(
-        null,
-        mapDispatchToProps
-    ),
+    connect(null, mapDispatchToProps),
     withRouter,
     reduxForm({
         form: 'ConfirmForm'
