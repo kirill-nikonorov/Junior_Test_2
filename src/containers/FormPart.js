@@ -8,7 +8,10 @@ const FormPart = () => {
     const links = {
         authLink: {to: '/', label: 'Авторизация'},
         signInLink: {to: '/signup', label: 'Регистрация'},
-        signInCompleteLink: {to: '/signupcomplete', label: 'Подтверждение регистрации'},
+        signInCompleteLink: {
+            to: '/signupcomplete',
+            label: 'Подтверждение регистрации'
+        },
         createNewCompanyLink: {to: '/createnewcompany', label: 'Создать компанию'}
     };
 
@@ -30,8 +33,16 @@ const FormPart = () => {
     );
 
     const routes = [
-        {path: '/', component: SignInForm, linkElement: linksElements.createNewCompanyLink},
-        {path: '/signup', component: SingUpForm, linkElement: linksElements.authLink},
+        {
+            path: '/',
+            component: SignInForm,
+            linkElement: linksElements.createNewCompanyLink
+        },
+        {
+            path: '/signup',
+            component: SingUpForm,
+            linkElement: linksElements.authLink
+        },
         {path: '/signupcomplete', component: SignUpCompleteForm},
         {path: '/createnewcompany', component: NewCompanyForm}
     ].map(({path, component, linkElement}) => (

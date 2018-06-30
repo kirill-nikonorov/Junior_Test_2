@@ -6,7 +6,6 @@ import {hot} from 'react-hot-loader';
 import * as ActionsCreators from '../../actions/index';
 import {Field, reduxForm} from 'redux-form';
 import {Form, Select} from 'antd';
-import 'antd/dist/antd.css';
 import PropTypes from 'prop-types';
 
 import {InputField, SubscribeButton, SelectField} from '../../components';
@@ -150,6 +149,9 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     hot(module),
     withRouter,
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
     reduxForm({form: 'CompanyForm'})
 )(UserForm);

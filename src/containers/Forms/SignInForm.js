@@ -43,7 +43,11 @@ class UserForm extends React.Component {
     }
 
     render() {
-        const {handleSubmit, actions: {authUser}, linkElement} = this.props;
+        const {
+            handleSubmit,
+            actions: {authUser},
+            linkElement
+        } = this.props;
 
         return (
             <Form layout="horizontal" onSubmit={handleSubmit(this.handleSubmit)}>
@@ -62,6 +66,19 @@ class UserForm extends React.Component {
                     type="password"
                     validate={required}
                 />
+                <input
+                    type="button"
+                    value="Auth"
+                    onClick={() =>
+                        authUser(
+                            {
+                                username: 'sergej_sergej_nikonorov@mail.ru',
+                                password: '206 chast 2'
+                            },
+                            () => {}
+                        )
+                    }
+                />
                 <SubscribeButton text="Log In" />
                 {linkElement}
             </Form>
@@ -78,20 +95,9 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     hot(module),
     withRouter,
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps
+    ),
     reduxForm({form: 'CompanyForm'})
 )(UserForm);
-
-/*<input
-                    type="button"
-                    value="Auth"
-                    onClick={() =>
-                        authUser(
-                            {
-                                username: 'sergej_sergej_nikonorov@mail.ru',
-                                password: '206 chast 2'
-                            },
-                            () => {}
-                        )
-                    }
-                />*/

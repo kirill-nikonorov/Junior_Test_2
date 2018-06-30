@@ -1,6 +1,6 @@
-import {notification} from 'antd/lib/index';
+import {notification} from 'antd';
 
-export const showErrorNotification = (status = '0', data) => {
+export const showErrorNotification = (status = '', data) => {
     let problems = [];
     if (!(data instanceof Object) || Array.isArray(data)) problems = data;
     else {

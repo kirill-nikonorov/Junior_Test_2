@@ -4,16 +4,14 @@ import {actions as tokenActions} from '../../lib/symbiote/token';
 import api from '../api';
 
 export const fetchIndustries = () => dispath => {
-    api
-        .getIndustries()
+    api.getIndustries()
         .then(({data: {results}}) => {
             dispath(companyOrientationsActions.industries.saveIndustries(results));
         })
         .catch(handleError);
 };
 export const fetchSubIndustries = industryId => dispath => {
-    api
-        .getSubIndustries(industryId)
+    api.getSubIndustries(industryId)
         .then(({data: {results}}) => {
             dispath(
                 companyOrientationsActions.subIndustries.saveSubIndustries(results, industryId)
@@ -22,8 +20,7 @@ export const fetchSubIndustries = industryId => dispath => {
         .catch(handleError);
 };
 export const postNewCompany = (data, onSuccess) => () => {
-    api
-        .postNewCompany(data)
+    api.postNewCompany(data)
         .then(({data: {id}}) => {
             onSuccess(id);
         })
@@ -31,20 +28,17 @@ export const postNewCompany = (data, onSuccess) => () => {
 };
 
 export const createNewUser = (data, onSuccess) => () => {
-    api
-        .postNewUser(data)
+    api.postNewUser(data)
         .then(onSuccess)
         .catch(handleError);
 };
 export const postNewIndividualUser = (data, onSuccess) => () => {
-    api
-        .postNewIndividualUser(data)
+    api.postNewIndividualUser(data)
         .then(onSuccess)
         .catch(handleError);
 };
 export const authUser = (data, onSuccess) => dispath => {
-    api
-        .authUser(data)
+    api.authUser(data)
         .then(({data: {token}}) => {
             showSuccessNotification('success authorization');
             dispath(tokenActions.saveToken(token));
@@ -53,8 +47,7 @@ export const authUser = (data, onSuccess) => dispath => {
         .catch(handleError);
 };
 export const confirmRegistration = (data, onSuccess) => dispath => {
-    api
-        .confirmRegistration(data)
+    api.confirmRegistration(data)
         .then(({data: {token}}) => {
             showSuccessNotification('success confirmation');
             dispath(tokenActions.saveToken(token));
@@ -63,8 +56,7 @@ export const confirmRegistration = (data, onSuccess) => dispath => {
         .catch(handleError);
 };
 export const resendConfirmationCode = data => () => {
-    api
-        .resendConfirmationCode(data)
+    api.resendConfirmationCode(data)
         .then(() => {
             showSuccessNotification('Successfully Sent');
         })

@@ -7,7 +7,7 @@ import {withRouter} from 'react-router-dom';
 
 import * as ActionsCreators from '../../actions';
 import 'react-bootstrap';
-import {Form, Row, Col} from 'antd/lib/index';
+import {Form, Row, Col} from 'antd';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 
@@ -69,7 +69,9 @@ class SingUpForm extends React.Component {
     }
 
     extractCompanyIdFromLocationParams() {
-        const {location: {search}} = this.props;
+        const {
+            location: {search}
+        } = this.props;
         return qs.parse(search.substr(1)).companyID;
     }
 
@@ -149,7 +151,10 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     hot(module),
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps
+    ),
     withRouter,
     reduxForm({
         form: 'UserSinUpForm',
