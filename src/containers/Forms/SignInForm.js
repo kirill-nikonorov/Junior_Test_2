@@ -66,19 +66,6 @@ class UserForm extends React.Component {
                     type="password"
                     validate={required}
                 />
-                <input
-                    type="button"
-                    value="Auth"
-                    onClick={() =>
-                        authUser(
-                            {
-                                username: 'sergej_sergej_nikonorov@mail.ru',
-                                password: '206 chast 2'
-                            },
-                            () => {}
-                        )
-                    }
-                />
                 <SubscribeButton text="Log In" />
                 {linkElement}
             </Form>
@@ -101,3 +88,17 @@ export default compose(
     ),
     reduxForm({form: 'CompanyForm'})
 )(UserForm);
+
+/*<input
+                    type="button"
+                    value="Auth"
+                    onClick={() =>
+                        authUser(
+                            {
+                                username: 'sergej_sergej_nikonorov@mail.ru',
+                                password: '206 chast 2'
+                            },
+                            () => {}
+                        )
+                    }
+                />*/

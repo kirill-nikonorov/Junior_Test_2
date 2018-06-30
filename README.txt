@@ -1,5 +1,5 @@
-Демо проекта
-https://junior-test.now.sh
+Демо проекта (временно на основе webpack-dev-server)
+https://test-junior.now.sh
 
 Тестовое задание на позицию front-end developer в компанию DataSite Technology (dst.uz)
 
