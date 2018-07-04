@@ -8,8 +8,9 @@ export default config => {
         'X-Requested-With': 'XMLHttpRequest'
     };
 
-    const token = JSON.parse(localStorage.getItem('redux')).token;
-    if (token) headers.Authorization = `Token ${token}`;
+    const reduxItem = JSON.parse(localStorage.getItem('redux'));
+    if (reduxItem && reduxItem.token) headers.Authorization = `Token ${reduxItem.token}`;
+
 
     axiosConfig.headers = headers;
     axiosConfig.method = axiosConfig.method || 'GET';
